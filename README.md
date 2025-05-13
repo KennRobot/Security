@@ -9,7 +9,7 @@ Endpoint | Route | Description | Finish
 `GET` | /api/security/users | todos los usuarios | No
 `GET` | /api/security/users?userid=FIBARRAC | un solo usuario | No
 `POST` | /api/security/createuser | crear nuevo usuario | No
-`GET` | api/inv/GetAllCatalogs | todos los catalogos | Yes
+`PATCH` | /api/security/users?userid=CHALMUNOZOR | Actualizar usuario (validar que el rol Exista) | No
 `GET` | api/inv/GetAllCatalogs | todos los catalogos | Yes
 
 
