@@ -5,8 +5,9 @@ using {dbsecurity as security} from '../models/SchemasSAPCAP/dbsecurity';
 service inversionsRoute @(path: '/api/inv') {
     entity catalogs        as projection on security.Catalogos;
     entity process         as projection on security.Procesos;
-    entity users         as projection on security.Usuarios;
-    entity views        as projection on security.Views;
+    entity users           as projection on security.Usuarios;
+    entity views           as projection on security.Views;
+    entity roles           as projection on security.Roles;
 
     //******************* CATALOGS ***********************************
     @Core.Description: 'get-all-catalogs'
@@ -27,6 +28,11 @@ service inversionsRoute @(path: '/api/inv') {
     @Core.Description: 'get-all-views'
     @path            : 'GetAllViews'
     function GetAllViews()   returns array of views;
+
+    //******************* ROLES ***********************************
+    @Core.Description: 'get-all-Roles'
+    @path            : 'GetAllRoles'
+    function GetAllRoles()   returns array of roles;
 
     
 }
