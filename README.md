@@ -4,7 +4,10 @@ Endpoint | Route | Description | Finish | Creator
 ---------|----------|----------|----------|----------
 `GET` | /api/inv/GetAllCatalogs | todos los catalogos | Yes | Kennby
 `GET` | /api/security/catalogs?labelid=IdApplications | un solo catalogo | No| Kennby
-`GET` | /api/security/catalogs?LabelId=IdApplication&ValueId=IdSecurity | filtro catalogos | No| Kennby
+`GET` | /api/security/catalogs?LabelId=IdApplication | filtro catalogos por IdApplication| No| Adolfo
+`GET` | /api/security/catalogs?ValueId=IdSecurity | filtro catalogos por ValueId | No| Adolfo
+`PUT` | /api/security/catalogs?ValueId=IdSecurity | actualizar catalogo | No| aaron
+`DELETE` | /api/security/catalogs?ValueId=IdSecurity | alimnar catalogo | No| joya
 
 # EndPoints para Usuarios
 
