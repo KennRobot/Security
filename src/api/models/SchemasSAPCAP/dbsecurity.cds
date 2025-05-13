@@ -128,4 +128,25 @@ entity DetalleRegistro {
     REGUSER          : String;
 }
 
+//********************************** VISTAS (VIEWS) **********************/
+entity Views {
+    key ID             : UUID;
+        COMPANYID      : Integer;
+        CEDIID         : Integer;
+        LABELID        : String;
+        VALUEPAID      : String;
+        VALUEID        : String;
+        VALUE          : String;
+        ALIAS          : String;
+        SEQUENCE       : Integer;
+        IMAGE          : String;
+        VALUESAPID     : String;
+        DESCRIPTION    : String;
+        ROUTE          : String;
+
+        createdAt      : Timestamp;
+        updatedAt      : Timestamp;
+}
+
+
 

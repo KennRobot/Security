@@ -2,6 +2,7 @@ const cds = require('@sap/cds');
 const { GetAllCatalogs } = require('../services/catalogs.services');
 const { GetAllProcess } = require('../services/process.services');
 const { GetAllUsers } = require('../services/users.services');
+const { GetAllViews } = require('../services/views.services');
 
 module.exports = class dbsecurityClass extends cds.ApplicationService {
     async init() {
@@ -14,9 +15,14 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
         this.on('GetAllProcess', async (req) => {
             return await GetAllProcess(req);
         });
+
          //****************** PARA PROCESS ***********************/
         this.on('GetAllUsers', async (req) => {
             return await GetAllUsers(req);
+        });
+         //****************** PARA PROCESS ***********************/
+        this.on('GetAllViews', async (req) => {
+            return await GetAllViews(req);
         });
 
         return super.init();
