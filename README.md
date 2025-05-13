@@ -1,8 +1,8 @@
 # EndPoints
 
 
-Endpoint | Route | Description
----------|----------|----------
-`GET` | api/inv/GetAllCatalogs | todos los catalogos
+Endpoint | Route | Description | Finish
+---------|----------|----------|----------
+`GET` | api/inv/GetAllCatalogs | todos los catalogos | Yes
 
 
