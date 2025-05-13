@@ -23,7 +23,7 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'GetAllUsers'
     function GetAllUsers()   returns array of users;
 
-    //******************* PROCESS ***********************************
+    //******************* VIEWS ***********************************
     @Core.Description: 'get-all-views'
     @path            : 'GetAllViews'
     function GetAllViews()   returns array of views;
