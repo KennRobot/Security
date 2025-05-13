@@ -1,6 +1,5 @@
 namespace dbsecurity;
 
-
 //********************************** CATALOGOS **********************/
 entity Catalogos {
     key ID                      : UUID;
