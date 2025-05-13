@@ -1,10 +1,10 @@
 # EndPoints para Catalogos
 
-Endpoint | Route | Description | Finish
----------|----------|----------|----------
-`GET` | /api/inv/GetAllCatalogs | todos los catalogos | Yes
-`GET` | /api/security/catalogs?labelid=IdApplications | un solo catalogo | No
-`GET` | /api/security/catalogs?LabelId=IdApplication&ValueId=IdSecurity | filtro catalogos | No
+Endpoint | Route | Description | Finish | Creator
+---------|----------|----------|----------|----------
+`GET` | /api/inv/GetAllCatalogs | todos los catalogos | Yes | Kennby
+`GET` | /api/security/catalogs?labelid=IdApplications | un solo catalogo | No| Kennby
+`GET` | /api/security/catalogs?LabelId=IdApplication&ValueId=IdSecurity | filtro catalogos | No| Kennby
 
 # EndPoints para Usuarios
 
