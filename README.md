@@ -10,7 +10,7 @@ Endpoint | Route | Description | Finish
 
 Endpoint | Route | Description | Finish
 ---------|----------|----------|----------
-`GET` | /api/security/users | todos los usuarios | No
+`GET` | /api/security/users | todos los usuarios | Yes
 `GET` | /api/security/users?userid=FIBARRAC | un solo usuario | No
 `POST` | /api/security/createuser | crear nuevo usuario | No
 `PATCH` | /api/security/users?userid=CHALMUNOZOR | Actualizar usuario (validar que el rol Exista) | No
@@ -21,7 +21,7 @@ Endpoint | Route | Description | Finish
 
 Endpoint | Route | Description | Finish
 ---------|----------|----------|----------
-`GET` | /api/security/roles | Todos los roles con procesos y privilegios | No
+`GET` | /api/security/roles | Todos los roles con procesos y privilegios | Yes
 `GET` | /api/security/roles?roleid=IdWarehouseManage | Obtener usuarios por roles | No
 `POST` | /api/security/roles | Crear rol (Validar que el privilegio y el proceso existan en la colección correspondiente) | No
 `PUT` | /api/security/roles?roleid=IdWarehouseManager | Actualizar rol (Validar que el privilegio y el proceso existan) | No
