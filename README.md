@@ -7,7 +7,7 @@ Endpoint | Route | Description | Finish | Creator
 `GET` | /api/security/catalogs?LabelId=IdApplication | filtro catalogos por IdApplication| No| Adolfo
 `GET` | /api/security/catalogs?ValueId=IdSecurity | filtro catalogos por ValueId | No| Adolfo
 `PUT` | /api/security/catalogs?ValueId=IdSecurity | actualizar catalogo | No| aaron
-`DELETE` | /api/security/catalogs?ValueId=IdSecurity | alimnar catalogo | No| joya
+`DELETE` | /api/security/catalogs?ValueId=IdSecurity | alimnar catalogo | Tes | joya
 
 # EndPoints para Usuarios
 
