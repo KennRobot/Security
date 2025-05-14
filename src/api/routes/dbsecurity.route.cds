@@ -14,6 +14,10 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'GetAllCatalogs'
     function GetAllCatalogs()   returns array of catalogs;
 
+    @Core.Description: 'deleted-by-id-catalogs'
+    @path            : 'CatalogosDeleteById'
+    action CatalogosDeleteById(_id: String)   returns Boolean ;
+
     //******************* PROCESS ***********************************
     @Core.Description: 'get-all-process'
     @path            : 'GetAllProcess'

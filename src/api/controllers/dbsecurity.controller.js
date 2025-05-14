@@ -1,5 +1,5 @@
 const cds = require('@sap/cds');
-const { GetAllCatalogs } = require('../services/catalogs.services');
+const { GetAllCatalogs, CatalogosDeleteById } = require('../services/catalogs.services');
 const { GetAllProcess } = require('../services/process.services');
 const { GetAllUsers } = require('../services/users.services');
 const { GetAllViews } = require('../services/views.services');
@@ -10,6 +10,9 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
         //****************** PARA CATALOGS ***********************/
         this.on('GetAllCatalogs', async (req) => {
             return await GetAllCatalogs(req);
+        });
+        this.on('CatalogosDeleteById', async (req) => {
+            return await CatalogosDeleteById(req);
         });
 
          //****************** PARA PROCESS ***********************/
