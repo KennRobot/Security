@@ -16,7 +16,7 @@ service inversionsRoute @(path: '/api/inv') {
 
     @Core.Description: 'deleted-by-id-catalogs'
     @path            : 'CatalogosDeleteById'
-    action CatalogosDeleteById(_id: String)   returns Boolean ;
+    action CatalogosDeleteById(ValueId : String)   returns Boolean ;
 
     //******************* PROCESS ***********************************
     @Core.Description: 'get-all-process'

@@ -13,35 +13,27 @@ async function GetAllCatalogs(req) {
 
 async function CatalogosDeleteById(req) {
   try {
-    const { _id } = req.data || req.body;
-
-    if (!_id || typeof _id !== 'string') {
+    // Obtener el parámetro directamente desde el body o query (según cómo lo mandes)
+    const { ValueId } = req.data || req.body;
+    //Valida que el dato existe
+    if (!ValueId || typeof ValueId !== 'string') {
       return {
         status: 400,
-        message: 'Debe proporcionar un _id válido (como string)'
+        message: 'Debe proporcionar un ValueId válido'
       };
     }
 
-    // Verifica si el ID es un ObjectId válido
-    const isValidObjectId = require('mongoose').Types.ObjectId.isValid(_id);
-    if (!isValidObjectId) {
-      return {
-        status: 400,
-        message: 'El _id proporcionado no tiene un formato válido de ObjectId'
-      };
-    }
-
-    // Eliminar por _id
-    const deleted = await catalogsSchema.findByIdAndDelete(_id).lean();
+    // Buscar y eliminar el documento
+    const deleted = await catalogsSchema.findOneAndDelete({ VALUEID: ValueId }).lean();
 
     if (!deleted) {
       return {
         status: 404,
-        message: `No se encontró un registro con el _id "${_id}"`
+        message: `No se encontró un registro con el VALUEID "${ValueId}"`
       };
     }
 
-    return true; // CAP espera normalmente un booleano si el retorno es `Edm.Boolean`
+    return true; // Para CAP, si se espera un booleano
   } catch (error) {
     console.error('Error en CatalogosDeleteById:', error);
     return {
@@ -50,6 +42,7 @@ async function CatalogosDeleteById(req) {
     };
   }
 }
+
 
 
 
