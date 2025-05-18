@@ -13,12 +13,12 @@ Endpoint | Route | Description | Finish | Creator
 
 Endpoint | Route | Description | Finish | Creator
 ---------|----------|----------|----------|----------
-`GET` | /api/security/users | todos los usuarios | Yes | Kennby
-`GET` | /api/security/users?userid=FIBARRAC | un solo usuario | No| Adolfo
-`POST` | /api/security/createuser | crear nuevo usuario | No | Aaron
-`PATCH` | /api/security/users?userid=CHALMUNOZOR | Actualizar usuario (validar que el rol Exista) | No | Joya
-`PATCH` | /api/security/deleteusers?userid=CHALMUNOZOR | Borrado lógico (Usuario Inactivo) | No | Pedro y Jesus
-`DELETE` | /api/security/deleteusers?userid=CHALMUNOZOR| Eliminado físico (Usuario Eliminado) | No | Pedro y Jesus
+`GET` | /api/inv/users | todos los usuarios | Yes | Kennby
+`GET` | /api/inv/users?userid=FIBARRAC | un solo usuario | No| Adolfo
+`POST` | /api/inv/CreateUser | crear nuevo usuario | No | Aaron
+`PATCH` | /api/inv/users?userid=CHALMUNOZOR | Actualizar usuario (validar que el rol Exista) | No | Joya
+`PATCH` | /api/inv/deleteusers?userid=CHALMUNOZOR | Borrado lógico (Usuario Inactivo) | No | Pedro y Jesus
+`DELETE` | /api/inv/deleteusers?userid=CHALMUNOZOR| Eliminado físico (Usuario Eliminado) | No | Pedro y Jesus
 
 # EndPoints para Roles
 
