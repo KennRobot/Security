@@ -18,6 +18,13 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'CatalogosDeleteById'
     action CatalogosDeleteById(ValueId : String)   returns Boolean ;
 
+    @Core.Description: 'get-catalogs-by-application-id'
+    @path            : 'GetCatalogsByApplicationId'
+    function GetCatalogsByApplicationId(IdApplication: String) returns array of catalogs;
+
+    @Core.Description: 'get-catalogs-by-valueid'
+    @path            : 'GetCatalogsByValueId'
+    function GetCatalogsByValueId(ValueId: String) returns array of catalogs;
     //******************* PROCESS ***********************************
     @Core.Description: 'get-all-process'
     @path            : 'GetAllProcess'
@@ -37,6 +44,10 @@ service inversionsRoute @(path: '/api/inv') {
     @Core.Description: 'get-all-Roles'
     @path            : 'GetAllRoles'
     function GetAllRoles()   returns array of roles;
+
+    @Core.Description: 'get-role-with-users-by-roleid'
+    @path            : 'GetRoleWithUsers'
+    function getRoleWithUsersHandler(roleid: String) returns roles;
 
     
 }

@@ -1,9 +1,10 @@
 const cds = require('@sap/cds');
-const { GetAllCatalogs, CatalogosDeleteById } = require('../services/catalogs.services');
+const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCatalogsByValueId } = require('../services/catalogs.services');
 const { GetAllProcess } = require('../services/process.services');
 const { GetAllUsers } = require('../services/users.services');
 const { GetAllViews } = require('../services/views.services');
-const { GetAllRoles } = require('../services/roles.services');
+const { GetAllRoles, getRoleWithUsers } = require('../services/roles.services');
+
 
 module.exports = class dbsecurityClass extends cds.ApplicationService {
     async init() {
@@ -14,7 +15,14 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
         this.on('CatalogosDeleteById', async (req) => {
             return await CatalogosDeleteById(req);
         });
-
+        
+        this.on('GetCatalogsByApplicationId', async (req) => {
+            return await GetCatalogsByApplicationId(req);
+        });
+   
+        this.on('GetCatalogsByValueId', async (req) => {
+            return await GetCatalogsByValueId(req);
+        });
          //****************** PARA PROCESS ***********************/
         this.on('GetAllProcess', async (req) => {
             return await GetAllProcess(req);
@@ -34,6 +42,13 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
         this.on('GetAllRoles', async (req) => {
             return await GetAllRoles(req);
         });
+
+        //****************** PARA ROLES CON USUARIOS ***********************/
+        this.on('GetRoleWithUsers', async (req) => {
+            const { roleid } = req.data;
+            return await getRoleWithUsers(roleid);
+        });
+        
 
         return super.init();
     }

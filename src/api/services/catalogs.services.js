@@ -43,10 +43,31 @@ async function CatalogosDeleteById(req) {
   }
 }
 
+async function GetCatalogsByApplicationId(req) {
+    const { IdApplication } = req.data;
 
+    if (!IdApplication) throw new Error("IdApplication is required");
+
+    const results = await catalogsSchema.find({ IdApplication }).lean();
+
+    return results;
+}
+
+
+async function GetCatalogsByValueId(req) {
+    const { ValueId } = req.data;
+
+    if (!ValueId) throw new Error("ValueId is required");
+
+    const results = await Catalogo.find({ ValueId }).lean();
+
+    return results;
+}
 
 
 module.exports = {
   GetAllCatalogs,
-  CatalogosDeleteById
+  CatalogosDeleteById,
+  GetCatalogsByApplicationId,
+  GetCatalogsByValueId
 };
