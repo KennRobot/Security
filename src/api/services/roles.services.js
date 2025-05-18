@@ -1,6 +1,8 @@
  //************* SERVICIO PARA MONGO DB */
 const RolesSchema = require('../models/SchemasMongoDB/roles');
 const UserSchema = require('../models/SchemasMongoDB/usuarios');
+const processSchema = require('../models/SchemasMongoDB/procesos');
+
 
 //**************  GET ALLL */
 async function GetAllRoles(req) {
@@ -12,7 +14,7 @@ async function GetAllRoles(req) {
   }
 }
 
-//************** GET USUAIRO */
+//************** GET USUARIO */
 async function getRoleWithUsers(req) {
     if (!req) throw new Error("Missing roleid");
 
@@ -34,7 +36,10 @@ async function getRoleWithUsers(req) {
     };
 }
 
+
+
 module.exports = {
   GetAllRoles,
   getRoleWithUsers,
+
 };

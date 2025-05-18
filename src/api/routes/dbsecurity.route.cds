@@ -50,6 +50,10 @@ service inversionsRoute @(path: '/api/inv') {
     @Core.Description: 'get-all-users'
     @path            : 'GetAllUsers'
     function GetAllUsers()   returns array of users;
+    
+    @Core.Description: 'crear-usuario-nuevo'
+    @path            : 'CreateUser'
+    action CreateUser(user: users) returns Boolean;
 
     //******************* VIEWS ***********************************
     @Core.Description: 'get-all-views'
@@ -83,5 +87,5 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'GetRoleWithUsers'
     function getRoleWithUsersHandler(roleid: String) returns roles;
 
-    
+
 }

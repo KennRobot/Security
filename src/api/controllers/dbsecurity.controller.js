@@ -4,6 +4,8 @@ const { GetAllProcess, UpdateProcesByCompanyId } = require('../services/process.
 const { GetAllUsers } = require('../services/users.services');
 const { GetAllViews, UpdateViewByCompanyId } = require('../services/views.services');
 const { GetAllRoles, getRoleWithUsers } = require('../services/roles.services');
+const { CreateUser } = require('../services/users.services');
+
 
 
 module.exports = class dbsecurityClass extends cds.ApplicationService {
@@ -37,6 +39,11 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
             return await GetAllUsers(req);
         });
 
+        this.on('CreateUser', async (req) => {
+            return await CreateUser(req);
+        });
+        
+
          //****************** PARA VIEWS ***********************/
         this.on('GetAllViews', async (req) => {
             return await GetAllViews(req);
@@ -50,6 +57,8 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
         this.on('GetAllRoles', async (req) => {
             return await GetAllRoles(req);
         });
+        
+
 
         //****************** PARA ROLES CON USUARIOS ***********************/
         this.on('GetRoleWithUsers', async (req) => {
@@ -57,7 +66,8 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
             return await getRoleWithUsers(roleid);
         });
         
-
+       
+        
         return super.init();
     }
 };
