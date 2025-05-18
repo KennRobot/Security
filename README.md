@@ -1,13 +1,13 @@
 # EndPoints para Catalogos
 
-Endpoint | Route | Description | Finish | Creator
----------|----------|----------|----------|----------
-`GET` | /api/inv/GetAllCatalogs | todos los catalogos | Yes | Kennby
-`GET` | /api/security/catalogs?labelid=IdApplications | un solo catalogo | No| Kennby
-`GET` | /api/security/catalogs?LabelId=IdApplication | filtro catalogos por IdApplication| No| Adolfo
-`GET` | /api/security/catalogs?ValueId=IdSecurity | filtro catalogos por ValueId | No| Adolfo
-`PUT` | /api/security/catalogs?ValueId=IdSecurity | actualizar catalogo | No| aaron
-`DELETE` | /api/security/catalogs?ValueId=IdSecurity | alimnar catalogo | Tes | joya
+Endpoint | Route | Description | Finish | Creator | Body
+---------|----------|----------|----------|---------- |----------
+`GET` | /api/inv/GetAllCatalogs | todos los catalogos | Yes | Kennby | none
+`GET` | /api/security/catalogs?labelid=IdApplications | un solo catalogo | No| Kennby| none
+`GET` | /api/security/catalogs?LabelId=IdApplication | filtro catalogos por IdApplication| No| Adolfo | none
+`GET` | /api/security/catalogs?ValueId=IdSecurity | filtro catalogos por ValueId | No| Adolfo | none
+`PUT` | /api/security/catalogs?ValueId=IdSecurity | actualizar catalogo | No| aaron | none
+`DELETE` | /api/security/catalogs?ValueId=IdSecurity | alimnar catalogo | Tes | joya| none
 
 # EndPoints para Usuarios
 
