@@ -36,7 +36,7 @@ Endpoint | Route | Description | Finish| Creator
 Endpoint | Route | Description | Finish| Creator
 ---------|----------|----------|----------|----------
 `POST` | /api/security/view | Nueva vista| No | Aaron
-`PUT` | /api/security/view?valueid=IdApplications-IdInversions | actualizar | No | Joya
+`PUT` | /api/security/view?valueid=IdApplications-IdInversions | actualizar | Yes | Joya
 `PATCH` |   /api/security/deleteview?valueid=IdApplications-IdInversions | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus
 `DELETE` |  /api/security/deleteview?valueid=IdApplications-IdInversions | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus
 
@@ -45,7 +45,7 @@ Endpoint | Route | Description | Finish| Creator
 Endpoint | Route | Description | Finish| Creator
 ---------|----------|----------|----------|----------
 `POST` | /api/security/processes | Nuevo proceso | No | Aaron
-`PUT` | /api/security/values/processes?valueid=IdAllPrivilegesMonitoring | Actualizar | No | Joya
+`PUT` | /api/security/values/processes?valueid=IdAllPrivilegesMonitoring | Actualizar | Yes | Joya
 `PATCH` |   /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus
 `DELETE` |  /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus
 
