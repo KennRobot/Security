@@ -30,7 +30,23 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'GetAllProcess'
     function GetAllProcess()   returns array of process;
 
-    //******************* PROCESS ***********************************
+    @Core.Description: 'update-process-by-company-id'
+    @path: 'UpdateProcesByCompanyId'
+    action UpdateProcesByCompanyId(
+        COMPANYID: Integer,
+        CEDIID: Integer,
+        LABELID: String,
+        VALUEPAID: String,
+        VALUEID: String,
+        VALUE: String,
+        ALIAS: String,
+        SEQUENCE: Integer,
+        IMAGE: String,
+        VALUESAPID: String,
+        DESCRIPTION: String
+    ) returns Boolean;
+
+    //******************* USERS ***********************************
     @Core.Description: 'get-all-users'
     @path            : 'GetAllUsers'
     function GetAllUsers()   returns array of users;
@@ -39,6 +55,24 @@ service inversionsRoute @(path: '/api/inv') {
     @Core.Description: 'get-all-views'
     @path            : 'GetAllViews'
     function GetAllViews()   returns array of views;
+
+    @Core.Description: 'update-view-by-company-id'
+    @path: 'UpdateViewByCompanyId'
+    action UpdateViewByCompanyId(
+        COMPANYID: Integer,
+        CEDIID: Integer,
+        LABELID: String,
+        VALUEPAID: String,
+        VALUEID: String,
+        VALUE: String,
+        ALIAS: String,
+        SEQUENCE: Integer,
+        IMAGE: String,
+        VALUESAPID: String,
+        DESCRIPTION: String,
+        ROUTE: String
+    ) returns Boolean;
+
 
     //******************* ROLES ***********************************
     @Core.Description: 'get-all-Roles'

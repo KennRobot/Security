@@ -1,8 +1,8 @@
 const cds = require('@sap/cds');
 const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCatalogsByValueId } = require('../services/catalogs.services');
-const { GetAllProcess } = require('../services/process.services');
+const { GetAllProcess, UpdateProcesByCompanyId } = require('../services/process.services');
 const { GetAllUsers } = require('../services/users.services');
-const { GetAllViews } = require('../services/views.services');
+const { GetAllViews, UpdateViewByCompanyId } = require('../services/views.services');
 const { GetAllRoles, getRoleWithUsers } = require('../services/roles.services');
 
 
@@ -28,7 +28,11 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
             return await GetAllProcess(req);
         });
 
-         //****************** PARA PROCESS ***********************/
+        this.on('UpdateProcesByCompanyId', async (req) => {
+            return await UpdateProcesByCompanyId(req);
+        });
+
+         //****************** PARA USERS ***********************/
         this.on('GetAllUsers', async (req) => {
             return await GetAllUsers(req);
         });
@@ -36,6 +40,10 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
          //****************** PARA VIEWS ***********************/
         this.on('GetAllViews', async (req) => {
             return await GetAllViews(req);
+        });
+
+        this.on('UpdateViewByCompanyId', async (req) => {
+            return await UpdateViewByCompanyId(req);
         });
 
         //****************** PARA ROLES ***********************/
