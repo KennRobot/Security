@@ -76,6 +76,13 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'CreateUser'
     action CreateUser(user: users) returns Boolean;
 
+    @Core.Description: 'actualizar-usuario'
+    @path            : 'UpdateUserByUSERID'
+    action UpdateUserByUSERID(
+        USERID: String,
+        ROLES: array of RolesInput
+    ) returns Boolean;
+
     //******************* VIEWS ***********************************
     @Core.Description: 'get-all-views'
     @path            : 'GetAllViews'
@@ -159,6 +166,14 @@ service inversionsRoute @(path: '/api/inv') {
 
 
 
+}
+
+type RolesInput:{
+    ROLEID: String;
+    ROLENAME: String;
+    DESCRIPTION: String;
+    ROLEIDSAP: String;
+    PROCESSES: array of ProcessInput;
 }
 
 type ProcessInput: {

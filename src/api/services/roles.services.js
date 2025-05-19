@@ -51,8 +51,7 @@ async function UpdateRolByRoleID(req) {
     // Solo actualizar el campo PROCESSES
     const updatedDoc = await RolesSchema.findOneAndUpdate(
       { ROLEID },
-      { $set: { PROCESSES } },
-      { new: true }
+      { $set: { PROCESSES } }
     );
 
     if (!updatedDoc) {
