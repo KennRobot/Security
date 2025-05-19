@@ -36,7 +36,7 @@ Endpoint | Route | Description | Finish| Creator | Body
 
 Endpoint | Route | Description | Finish| Creator | Body
 ---------|----------|----------|----------|---------- | ----------
-`POST` | /api/security/view | Nueva vista| No | Aaron| none
+`POST` | /api/inv/CreateView | Nueva vista| No | Aaron| none
 `PUT` | /api/security/view?valueid=IdApplications-IdInversions | actualizar | Yes | Joya| none
 `PATCH` |   /api/security/deleteview?valueid=IdApplications-IdInversions | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
 `DELETE` |  /api/security/deleteview?valueid=IdApplications-IdInversions | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus| none
