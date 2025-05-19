@@ -81,6 +81,28 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'GetAllViews'
     function GetAllViews()   returns array of views;
 
+
+    @Core.Description: 'crear-nueva-vista'
+    @path            : 'CreateView'
+    action CreateView(
+        COMPANYID: Integer,
+        CEDIID: Integer,
+        LABELID: String,
+        VALUEPAID: String,
+        VALUEID: String,
+        VALUE: String,
+        ALIAS: String,
+        SEQUENCE: Integer,
+        IMAGE: String,
+        VALUESAPID: String,
+        DESCRIPTION: String,
+        ROUTE: String
+    ) returns {
+        success: Boolean;
+        message: String;
+    };
+
+
     @Core.Description: 'update-view-by-company-id'
     @path: 'UpdateViewByCompanyId'
     action UpdateViewByCompanyId(

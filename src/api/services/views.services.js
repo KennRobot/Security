@@ -11,6 +11,30 @@ async function GetAllViews(req) {
   }
 }
 
+const CreateViewService = async (req) => {
+  try {
+    const data = req.data;
+
+    if (!data.updatedAt) {
+      data.updatedAt = new Date();
+    }
+
+    const newView = new viewsSchema(data); // ← aquí el cambio
+    await newView.save();
+
+    return {
+      success: true,
+      message: 'Vista creada exitosamente'
+    };
+  } catch (error) {
+    console.error('Error al crear la vista:', error);
+    return {
+      success: false,
+      message: 'Error al crear la vista'
+    };
+  }
+};
+
 async function UpdateViewByCompanyId(req) {
   try {
     const { COMPANYID, ...rest } = req.data;
@@ -42,5 +66,6 @@ async function UpdateViewByCompanyId(req) {
 
 module.exports = {
   GetAllViews,
+  CreateViewService,
   UpdateViewByCompanyId
 };
