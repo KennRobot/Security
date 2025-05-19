@@ -87,5 +87,27 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'GetRoleWithUsers'
     function getRoleWithUsersHandler(roleid: String) returns roles;
 
+    @Core.Description: 'put-role-with-users-by-roleid'
+    @path            : 'UpdateRolByRoleID'
+    action UpdateRolByRoleID(
+        ROLEID: String,
+        PROCESSES: array of ProcessInput
+        ) returns Boolean;
 
+
+}
+
+type ProcessInput: {
+  PROCESSID: String;
+  PROCESSNAME: String;
+  VIEWID: String ;
+  VIEWNAME: String;
+  APPLICATIONID: String; 
+  APPLICATIONNAME: String; 
+  PRIVILEGES: array of Privilegios;
+}
+
+type Privilegios:{
+    PRIVILEGEID: String;
+    PRIVILEGENAME: String;
 }

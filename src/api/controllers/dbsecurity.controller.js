@@ -3,7 +3,7 @@ const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCata
 const { GetAllProcess, UpdateProcesByCompanyId } = require('../services/process.services');
 const { GetAllUsers } = require('../services/users.services');
 const { GetAllViews, UpdateViewByCompanyId } = require('../services/views.services');
-const { GetAllRoles, getRoleWithUsers } = require('../services/roles.services');
+const { GetAllRoles, getRoleWithUsers, UpdateRolByRoleID } = require('../services/roles.services');
 const { CreateUser } = require('../services/users.services');
 
 
@@ -58,8 +58,10 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
             return await GetAllRoles(req);
         });
         
-
-
+        this.on('UpdateRolByRoleID', async (req) => {
+            return await UpdateRolByRoleID(req);
+        });
+        
         //****************** PARA ROLES CON USUARIOS ***********************/
         this.on('GetRoleWithUsers', async (req) => {
             const { roleid } = req.data;

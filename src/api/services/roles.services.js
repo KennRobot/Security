@@ -36,10 +36,39 @@ async function getRoleWithUsers(req) {
     };
 }
 
+async function UpdateRolByRoleID(req) {
+  try {
+    const { ROLEID, PROCESSES } = req.data;
+
+    // Validación: verificar que todos los procesos existan
+    for (const proc of PROCESSES) {
+      const proceso = await processSchema.findOne({ LABELID: proc.PROCESSID });
+      if (!proceso) {
+        return { error: `Proceso ${proc.PROCESSID} no encontrado` };
+      }
+    }
+
+    // Solo actualizar el campo PROCESSES
+    const updatedDoc = await RolesSchema.findOneAndUpdate(
+      { ROLEID },
+      { $set: { PROCESSES } },
+      { new: true }
+    );
+
+    if (!updatedDoc) {
+      return { success: false, message: 'No se encontró un documento con ese ROLEID.' };
+    }
+
+    return { success: true, data: updatedDoc };
+  } catch (error) {
+    return { success: false, message: 'Error al actualizar el documento.', error };
+  }
+}
+
 
 
 module.exports = {
   GetAllRoles,
   getRoleWithUsers,
-
+  UpdateRolByRoleID,
 };
