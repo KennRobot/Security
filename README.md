@@ -28,7 +28,8 @@ Endpoint | Route | Description | Finish| Creator | Body
 `GET` | /api/security/roles?roleid=IdWarehouseManage | Obtener usuarios por roles | No | Adolfo| none
 `POST` | /api/security/roles | Crear rol (Validar que el privilegio y el proceso existan en la colección correspondiente) | No | Aaron| none
 `PUT` | /api/security/roles?roleid=IdWarehouseManager | Actualizar rol (Validar que el privilegio y el proceso existan) | No| Joya| none
-`PATCH` |  /api/security/deleteroles?roleid=IdSecurityAdministrator | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
+`POST` |  /api/inv/UpdateRoleActivation | Borrado lógico (Rol Inactivo) | Yes | Pedro y Jesus| { "roleid": "IdWarehouseManager", "activated": false}
+`PATCH` |   | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
 `DELETE` |  /api/security/deleteroles?roleid=IdSecurityAdministrator | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus| none
 
 # EndPoints para Vistas
