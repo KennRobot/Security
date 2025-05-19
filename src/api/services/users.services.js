@@ -70,8 +70,109 @@ async function CreateUser(req) {
     };
   }
 }
- 
+
+async function UpdateUserByUSERID(req) {
+  try {
+    const { USERID, ROLES } = req.data;
+
+    const usuario = await usersSchema.findOne({ USERID });
+    if (!usuario) {
+      return { success: false, message: 'No se encontró un usuario con ese USERID.' };
+    }
+
+    for (const nuevoRol of ROLES) {
+      // Verificar que el rol exista
+      const rolValido = await rolesSchema.findOne({ ROLEID: nuevoRol.ROLEID });
+      if (!rolValido) {
+        return { error: `Rol ${nuevoRol.ROLEID} no encontrado en rolesSchema.` };
+      }
+
+      const indexRol = usuario.ROLES.findIndex(r => r.ROLEID === nuevoRol.ROLEID);
+
+      if (indexRol === -1) {
+        // Rol no existe, agregar todo el objeto nuevo
+        await usersSchema.updateOne(
+          { USERID },
+          { $push: { ROLES: nuevoRol } }
+        );
+      } else {
+        // Rol existe: actualizar campos básicos
+        const existingRol = usuario.ROLES[indexRol];
+        const rolUpdate = {
+          [`ROLES.${indexRol}.ROLEIDSAP`]: nuevoRol.ROLEIDSAP,
+          [`ROLES.${indexRol}.ROLENAME`]: nuevoRol.ROLENAME,
+          [`ROLES.${indexRol}.DESCRIPTION`]: nuevoRol.DESCRIPTION
+        };
+
+        await usersSchema.updateOne({ USERID }, { $set: rolUpdate });
+
+        // Procesar cada proceso
+        for (const nuevoProceso of nuevoRol.PROCESSES || []) {
+          const indexProceso = existingRol.PROCESSES.findIndex(
+            p => p.PROCESSID === nuevoProceso.PROCESSID
+          );
+
+          if (indexProceso === -1) {
+            // Si el proceso no existe, lo agregamos
+            await usersSchema.updateOne(
+              { USERID },
+              { $push: { [`ROLES.${indexRol}.PROCESSES`]: nuevoProceso } }
+            );
+          } else {
+            // Proceso existe, actualizar campos básicos
+            const procesoUpdate = {
+              [`ROLES.${indexRol}.PROCESSES.${indexProceso}.PROCESSNAME`]: nuevoProceso.PROCESSNAME,
+              [`ROLES.${indexRol}.PROCESSES.${indexProceso}.VIEWID`]: nuevoProceso.VIEWID,
+              [`ROLES.${indexRol}.PROCESSES.${indexProceso}.VIEWNAME`]: nuevoProceso.VIEWNAME,
+              [`ROLES.${indexRol}.PROCESSES.${indexProceso}.APPLICATIONID`]: nuevoProceso.APPLICATIONID,
+              [`ROLES.${indexRol}.PROCESSES.${indexProceso}.APPLICATIONNAME`]: nuevoProceso.APPLICATIONNAME
+            };
+
+            await usersSchema.updateOne({ USERID }, { $set: procesoUpdate });
+
+            // Procesar privilegios
+            for (const nuevoPrivilegio of nuevoProceso.PRIVILEGES || []) {
+              const privilegioExistente = usuario.ROLES[indexRol].PROCESSES[indexProceso].PRIVILEGES || [];
+              const indexPrivilegio = privilegioExistente.findIndex(
+                p => p.PRIVILEGEID === nuevoPrivilegio.PRIVILEGEID
+              );
+
+              if (indexPrivilegio === -1) {
+                await usersSchema.updateOne(
+                  { USERID },
+                  {
+                    $push: {
+                      [`ROLES.${indexRol}.PROCESSES.${indexProceso}.PRIVILEGES`]: nuevoPrivilegio
+                    }
+                  }
+                );
+              } else {
+                // Actualizar nombre del privilegio si ya existe
+                await usersSchema.updateOne(
+                  { USERID },
+                  {
+                    $set: {
+                      [`ROLES.${indexRol}.PROCESSES.${indexProceso}.PRIVILEGES.${indexPrivilegio}.PRIVILEGENAME`]: nuevoPrivilegio.PRIVILEGENAME
+                    }
+                  }
+                );
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return { success: true, message: 'Usuario actualizados correctamente.' };
+  } catch (error) {
+    return { success: false, message: 'Error al actualizar el usuario.', error };
+  }
+}
+
+
+
 module.exports = {
   GetAllUsers,
-  CreateUser
+  CreateUser,
+  UpdateUserByUSERID
 };

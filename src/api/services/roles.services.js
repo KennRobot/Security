@@ -48,6 +48,13 @@ async function UpdateRolByRoleID(req) {
       }
     }
 
+    for (const proc of PROCESSES.PRIVILEGES) {
+      const proceso = await processSchema.findOne({ LABELID: proc.PROCESSID });
+      if (!proceso) {
+        return { error: `Proceso ${proc.PROCESSID} no encontrado` };
+      }
+    }
+
     // Solo actualizar el campo PROCESSES
     const updatedDoc = await RolesSchema.findOneAndUpdate(
       { ROLEID },

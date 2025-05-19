@@ -45,11 +45,10 @@ service inversionsRoute @(path: '/api/inv') {
     IMAGE: String,
     VALUESAPID: String,
     DESCRIPTION: String
-) returns {
-    success: Boolean;
-    message: String;
-};
-
+    ) returns {
+        success: Boolean;
+        message: String;
+    };
 
     @Core.Description: 'update-process-by-company-id'
     @path: 'UpdateProcesByCompanyId'
@@ -75,6 +74,13 @@ service inversionsRoute @(path: '/api/inv') {
     @Core.Description: 'crear-usuario-nuevo'
     @path            : 'CreateUser'
     action CreateUser(user: users) returns Boolean;
+
+    @Core.Description: 'actualizar-usuario'
+    @path            : 'UpdateUserByUSERID'
+    action UpdateUserByUSERID(
+        USERID: String,
+        ROLES: array of RolesInput
+    ) returns Boolean;
 
     //******************* VIEWS ***********************************
     @Core.Description: 'get-all-views'
@@ -116,6 +122,14 @@ service inversionsRoute @(path: '/api/inv') {
         ) returns Boolean;
 
 
+}
+
+type RolesInput:{
+    ROLEID: String;
+    ROLENAME: String;
+    DESCRIPTION: String;
+    ROLEIDSAP: String;
+    PROCESSES: array of ProcessInput;
 }
 
 type ProcessInput: {
