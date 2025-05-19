@@ -45,7 +45,7 @@ Endpoint | Route | Description | Finish| Creator | Body
 
 Endpoint | Route | Description | Finish| Creator | Body
 ---------|----------|----------|----------|---------- | ---------
-`POST` | /api/security/processes | Nuevo proceso | No | Aaron| none
+`POST` | /api/inv/CreateProcess | Nuevo proceso | si | Aaron| none
 `PUT` | /api/security/values/processes?valueid=IdAllPrivilegesMonitoring | Actualizar | Yes | Joya| none
 `PATCH` |   /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
 `DELETE` |  /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus| none
