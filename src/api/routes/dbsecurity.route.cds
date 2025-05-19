@@ -30,6 +30,27 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'GetAllProcess'
     function GetAllProcess()   returns array of process;
 
+
+    @Core.Description: 'crear-nuevo-proceso'
+    @path            : 'CreateProcess'
+    action CreateProcess(
+    COMPANYID: Integer,
+    CEDIID: Integer,
+    LABELID: String,
+    VALUEPAID: String,
+    VALUEID: String,
+    VALUE: String,
+    ALIAS: String,
+    SEQUENCE: Integer,
+    IMAGE: String,
+    VALUESAPID: String,
+    DESCRIPTION: String
+) returns {
+    success: Boolean;
+    message: String;
+};
+
+
     @Core.Description: 'update-process-by-company-id'
     @path: 'UpdateProcesByCompanyId'
     action UpdateProcesByCompanyId(
