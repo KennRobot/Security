@@ -36,7 +36,8 @@ Endpoint | Route | Description | Finish| Creator | Body
 
 Endpoint | Route | Description | Finish| Creator | Body
 ---------|----------|----------|----------|---------- | ----------
-`POST` | /api/security/view | Nueva vista| No | Aaron| none
+`POST` | /api/security/view | Nueva vista| No | Aaron| {"COMPANYID":0,"CEDIID":0,"LABELID":"IdProcesses","VALUEPAID":"IdViews-IdUserManagementView","VALUEID":"IdAllPrivilegesMonitoring","VALUE":"Monitoreo de Todos los Privilegios","ALIAS":"ALL_PRIV","SEQUENCE":30,"IMAGE":"https://security_auth.png","VALUESAPID":"Ejemplo Update10","DESCRIPTION":"Proceso de monitoreo de todos los privilegios de usuarios en el sistema."}
+
 `PUT` | /api/security/view?valueid=IdApplications-IdInversions | actualizar | Yes | Joya| none
 `PATCH` |   /api/security/deleteview?valueid=IdApplications-IdInversions | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
 `DELETE` |  /api/security/deleteview?valueid=IdApplications-IdInversions | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus| none
