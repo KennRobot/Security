@@ -11,6 +11,32 @@ async function GetAllProcess(req) {
   }
 }
 
+async function CreateProcessService(req) {
+  try {
+    const data = req.data;
+
+    if (!data.updatedAt) {
+      data.updatedAt = new Date();
+    }
+
+    const newProcess = new processSchema(data);
+    await newProcess.save();
+
+    return {
+      success: true,
+    message: 'Proceso creado exitosamente'
+    };
+  } catch (error) {
+    console.error('Error al crear el proceso:', error);
+    return {
+      success: false,
+      message: 'Error al crear el proceso'
+    };
+  }
+}
+
+
+
 async function UpdateProcesByCompanyId(req) {
   try {
     const { COMPANYID, ...rest } = req.data;
@@ -41,5 +67,6 @@ async function UpdateProcesByCompanyId(req) {
 
 module.exports = {
   GetAllProcess,
+  CreateProcessService,
   UpdateProcesByCompanyId
 };
