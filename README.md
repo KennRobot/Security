@@ -22,31 +22,31 @@ Endpoint | Route | Description | Finish | Creator | Body
 
 # EndPoints para Roles
 
-Endpoint | Route | Description | Finish| Creator
----------|----------|----------|----------|----------
-`GET` | /api/security/roles | Todos los roles con procesos y privilegios | Yes| Kennby
-`GET` | /api/security/roles?roleid=IdWarehouseManage | Obtener usuarios por roles | No | Adolfo
-`POST` | /api/security/roles | Crear rol (Validar que el privilegio y el proceso existan en la colección correspondiente) | No | Aaron
-`PUT` | /api/security/roles?roleid=IdWarehouseManager | Actualizar rol (Validar que el privilegio y el proceso existan) | No| Joya
-`PATCH` |  /api/security/deleteroles?roleid=IdSecurityAdministrator | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus
-`DELETE` |  /api/security/deleteroles?roleid=IdSecurityAdministrator | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus
+Endpoint | Route | Description | Finish| Creator | Body
+---------|----------|----------|----------|---------- | ----------
+`GET` | /api/security/roles | Todos los roles con procesos y privilegios | Yes| Kennby| none
+`GET` | /api/security/roles?roleid=IdWarehouseManage | Obtener usuarios por roles | No | Adolfo| none
+`POST` | /api/security/roles | Crear rol (Validar que el privilegio y el proceso existan en la colección correspondiente) | No | Aaron| none
+`PUT` | /api/security/roles?roleid=IdWarehouseManager | Actualizar rol (Validar que el privilegio y el proceso existan) | No| Joya| none
+`PATCH` |  /api/security/deleteroles?roleid=IdSecurityAdministrator | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
+`DELETE` |  /api/security/deleteroles?roleid=IdSecurityAdministrator | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus| none
 
 # EndPoints para Vistas
 
-Endpoint | Route | Description | Finish| Creator
----------|----------|----------|----------|----------
-`POST` | /api/security/view | Nueva vista| No | Aaron
-`PUT` | /api/security/view?valueid=IdApplications-IdInversions | actualizar | Yes | Joya
-`PATCH` |   /api/security/deleteview?valueid=IdApplications-IdInversions | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus
-`DELETE` |  /api/security/deleteview?valueid=IdApplications-IdInversions | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus
+Endpoint | Route | Description | Finish| Creator | Body
+---------|----------|----------|----------|---------- | ----------
+`POST` | /api/security/view | Nueva vista| No | Aaron| none
+`PUT` | /api/security/view?valueid=IdApplications-IdInversions | actualizar | Yes | Joya| none
+`PATCH` |   /api/security/deleteview?valueid=IdApplications-IdInversions | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
+`DELETE` |  /api/security/deleteview?valueid=IdApplications-IdInversions | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus| none
 
 # EndPoints para Procesos
 
-Endpoint | Route | Description | Finish| Creator
----------|----------|----------|----------|----------
-`POST` | /api/security/processes | Nuevo proceso | No | Aaron
-`PUT` | /api/security/values/processes?valueid=IdAllPrivilegesMonitoring | Actualizar | Yes | Joya
-`PATCH` |   /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus
-`DELETE` |  /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus
+Endpoint | Route | Description | Finish| Creator | Body
+---------|----------|----------|----------|---------- | ---------
+`POST` | /api/security/processes | Nuevo proceso | No | Aaron| none
+`PUT` | /api/security/values/processes?valueid=IdAllPrivilegesMonitoring | Actualizar | Yes | Joya| none
+`PATCH` |   /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
+`DELETE` |  /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus| none
 
 
