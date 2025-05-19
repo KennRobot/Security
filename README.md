@@ -11,14 +11,14 @@ Endpoint | Route | Description | Finish | Creator | Body
 
 # EndPoints para Usuarios
 
-Endpoint | Route | Description | Finish | Creator
----------|----------|----------|----------|----------
-`GET` | /api/inv/users | todos los usuarios | Yes | Kennby
-`GET` | /api/inv/users?userid=FIBARRAC | un solo usuario | No| Adolfo
-`POST` | /api/inv/CreateUser | crear nuevo usuario | No | Aaron
-`PATCH` | /api/inv/users?userid=CHALMUNOZOR | Actualizar usuario (validar que el rol Exista) | No | Joya
-`PATCH` | /api/inv/deleteusers?userid=CHALMUNOZOR | Borrado lógico (Usuario Inactivo) | No | Pedro y Jesus
-`DELETE` | /api/inv/deleteusers?userid=CHALMUNOZOR| Eliminado físico (Usuario Eliminado) | No | Pedro y Jesus
+Endpoint | Route | Description | Finish | Creator | Body
+---------|----------|----------|----------|---------- | ---------
+`GET` | /api/inv/users | todos los usuarios | Yes | Kennby| none
+`GET` | /api/inv/users?userid=FIBARRAC | un solo usuario | No| Adolfo| none
+`POST` | /api/inv/CreateUser | crear nuevo usuario | No | Aaron| none
+`PATCH` | /api/inv/users?userid=CHALMUNOZOR | Actualizar usuario (validar que el rol Exista) | No | Joya| none
+`PATCH` | /api/inv/deleteusers?userid=CHALMUNOZOR | Borrado lógico (Usuario Inactivo) | No | Pedro y Jesus| none
+`DELETE` | /api/inv/deleteusers?userid=CHALMUNOZOR| Eliminado físico (Usuario Eliminado) | No | Pedro y Jesus| none
 
 # EndPoints para Roles
 
