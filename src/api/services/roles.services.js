@@ -65,10 +65,50 @@ async function UpdateRolByRoleID(req) {
   }
 }
 
+//Delete Logico de roles 
+async function UpdateRoleActivation(req) {
+  const { roleid, activated, reguser } = req.data;
+  //validaciones
+  const result = await RolesSchema.findOneAndUpdate(
+    { ROLEID: roleid },
+    {
+      $set: {
+        'DETAIL_ROW.ACTIVED': activated,
+        'DETAIL_ROW.DELETED': !activated
+      },
+      $push: {
+        'DETAIL_ROW.DETAIL_ROW_REG': {
+          CURRENT: activated,
+          REGDATE: new Date(),
+          REGTIME: new Date(),
+          REGUSER: reguser
+        }
+      }
+    },
+    { new: true }
+  ).lean();
 
+  if (!result) throw new Error(`Rol ${roleid} no encontrado`);
+  return result;               
+}
+
+//Delete fisico de roles
+async function DeleteRoleById(req) {
+  const { roleid } = req.data;
+  if (!roleid) {
+    throw new Error("Se requiere 'roleid'");
+  }
+  const result = await RolesSchema.findOneAndDelete({ ROLEID: roleid }).lean();
+  if (!result) {
+    throw new Error(`Rol con ROLEID=${roleid} no encontrado`);
+  }
+  return result;
+}
 
 module.exports = {
   GetAllRoles,
   getRoleWithUsers,
   UpdateRolByRoleID,
+  UpdateRoleActivation,
+  DeleteRoleById
 };

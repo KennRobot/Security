@@ -3,7 +3,7 @@ const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCata
 const { GetAllProcess, UpdateProcesByCompanyId, CreateProcessService } = require('../services/process.services');
 const { GetAllUsers } = require('../services/users.services');
 const { GetAllViews, UpdateViewByCompanyId, CreateViewService } = require('../services/views.services');
-const { GetAllRoles, getRoleWithUsers, UpdateRolByRoleID } = require('../services/roles.services');
+const { GetAllRoles, getRoleWithUsers, UpdateRolByRoleID, UpdateRoleActivation, DeleteRoleById } = require('../services/roles.services');
 const { CreateUser } = require('../services/users.services');
 
 
@@ -68,6 +68,16 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
         
         this.on('UpdateRolByRoleID', async (req) => {
             return await UpdateRolByRoleID(req);
+        });
+
+        //Delete logico de roles
+        this.on('UpdateRoleActivation', async (req) => {
+        return await UpdateRoleActivation(req);
+        });
+
+        //Delete fisico de roles
+        this.on('DeleteRoleById', async (req) => {
+        return await DeleteRoleById(req);
         });
         
         //****************** PARA ROLES CON USUARIOS ***********************/

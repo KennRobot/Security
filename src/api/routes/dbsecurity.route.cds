@@ -137,6 +137,19 @@ service inversionsRoute @(path: '/api/inv') {
         PROCESSES: array of ProcessInput
         ) returns Boolean;
 
+    //Delete logico rol
+    @Core.Description: 'update-role-activation'
+    @path: 'UpdateRoleActivation'
+    action UpdateRoleActivation(
+        roleid    : String, 
+        activated : Boolean
+    ) returns roles;
+    //Delete fisico rol
+    @Core.Description: 'delete-role-by-id'
+    @path: 'DeleteRoleById'
+    action DeleteRoleById(
+        roleid : String
+    ) returns roles; 
 
 }
 
