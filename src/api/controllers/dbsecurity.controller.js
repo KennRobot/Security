@@ -2,7 +2,7 @@ const cds = require('@sap/cds');
 const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCatalogsByValueId } = require('../services/catalogs.services');
 const { GetAllProcess, UpdateProcesByCompanyId, CreateProcessService } = require('../services/process.services');
 const { GetAllUsers } = require('../services/users.services');
-const { GetAllViews, UpdateViewByCompanyId, CreateViewService } = require('../services/views.services');
+const { GetAllViews, UpdateViewByCompanyId, CreateViewService, DeleteViewByCompanyId } = require('../services/views.services');
 const { GetAllRoles, getRoleWithUsers, UpdateRolByRoleID, UpdateRoleActivation, DeleteRoleById } = require('../services/roles.services');
 const { CreateUser } = require('../services/users.services');
 
@@ -60,6 +60,10 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
         this.on('UpdateViewByCompanyId', async (req) => {
             return await UpdateViewByCompanyId(req);
         });
+        //Delete de views por id
+        this.on('DeleteViewByCompanyId', async req => {
+        return await DeleteViewByCompanyId(req);
+        });
 
         //****************** PARA ROLES ***********************/
         this.on('GetAllRoles', async (req) => {
@@ -85,8 +89,6 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
             const { roleid } = req.data;
             return await getRoleWithUsers(roleid);
         });
-        
-       
         
         return super.init();
     }

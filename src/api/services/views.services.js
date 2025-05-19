@@ -1,7 +1,6 @@
 //************* SERVICIO PARA MONGO DB */
 const viewsSchema = require('../models/SchemasMongoDB/vistas');
 
-
 async function GetAllViews(req) {
   try {
     let views = await viewsSchema.find().lean(); 
@@ -62,10 +61,23 @@ async function UpdateViewByCompanyId(req) {
     return { success: false, message: 'Error al actualizar el documento.', error };
   }
 }
+    //Delete de views por id
+    async function DeleteViewByCompanyId(req) {
+      const { COMPANYID } = req.data;
+      if (COMPANYID == null) {
+        throw new Error("Se requiere 'COMPANYID'");
+      }
 
+      const result = await viewsSchema.findOneAndDelete({ COMPANYID }).lean();
+      if (!result) {
+        throw new Error(`No se encontró ningún documento con COMPANYID=${COMPANYID}`);
+      }
+      return result;
+    }
 
 module.exports = {
   GetAllViews,
   CreateViewService,
-  UpdateViewByCompanyId
+  UpdateViewByCompanyId,
+  DeleteViewByCompanyId
 };

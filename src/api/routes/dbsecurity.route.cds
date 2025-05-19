@@ -120,6 +120,12 @@ service inversionsRoute @(path: '/api/inv') {
         ROUTE: String
     ) returns Boolean;
 
+    //Delete de views por id
+    @Core.Description: 'delete-view-by-companyid'
+    @path: 'DeleteViewByCompanyId'
+    action DeleteViewByCompanyId(
+    COMPANYID : Integer    // El COMPANYID de la vista a eliminar
+    ) returns views;
 
     //******************* ROLES ***********************************
     @Core.Description: 'get-all-Roles'
@@ -150,6 +156,8 @@ service inversionsRoute @(path: '/api/inv') {
     action DeleteRoleById(
         roleid : String
     ) returns roles; 
+
+
 
 }
 
