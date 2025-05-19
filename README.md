@@ -16,7 +16,22 @@ Endpoint | Route | Description | Finish | Creator | Body
 `GET` | /api/inv/users | todos los usuarios | Yes | Kennby| none
 `GET` | /api/inv/users?userid=FIBARRAC | un solo usuario | No| Adolfo| none
 `POST` | /api/inv/CreateUser | crear nuevo usuario | No | Aaron| none
-`PATCH` | /api/inv/users?userid=CHALMUNOZOR | Actualizar usuario (validar que el rol Exista) | No | Joya| none
+`PATCH` | /api/inv/users?userid=CHALMUNOZOR | Actualizar usuario (validar que el rol Exista) | YES | Joya| {
+	"USERID": "PMARTINEZ" ,
+	"ROLES" : [{
+		"ROLEID"    :"IdWarehouseManager",
+		 "ROLEIDSAP":"update prueba",
+		"PROCESSES":[{
+			"PROCESSID":"IdProcesses",
+			"PROCESSNAME":"proceso-update",
+			"PRIVILEGES":[{
+				"PRIVILEGEID":"IdRead",
+				"PRIVILEGENAME":"Read"
+			}]
+		}]
+	}
+	]
+}
 `PATCH` | /api/inv/deleteusers?userid=CHALMUNOZOR | Borrado lógico (Usuario Inactivo) | No | Pedro y Jesus| none
 `DELETE` | /api/inv/deleteusers?userid=CHALMUNOZOR| Eliminado físico (Usuario Eliminado) | No | Pedro y Jesus| none
 
@@ -36,7 +51,20 @@ Endpoint | Route | Description | Finish| Creator | Body
 Endpoint | Route | Description | Finish| Creator | Body
 ---------|----------|----------|----------|---------- | ----------
 `POST` | /api/inv/CreateView | Nueva vista| No | Aaron| none
-`PUT` | /api/security/view?valueid=IdApplications-IdInversions | actualizar | Yes | Joya| none
+`PUT` | /api/security/view?valueid=IdApplications-IdInversions | actualizar | Yes | Joya| {
+	"COMPANYID": 1,
+	"CEDIID": 1,
+	"LABELID":"Nuevo Label",
+	"VALUEPAID": "IdViews-IdUserManagementView",
+  "VALUEID": "IdAllPrivilegesMonitoring",
+  "VALUE": "Monitoreo de Todos los Privilegios",
+  "ALIAS": "ALL_PRIV",
+  "SEQUENCE": 1,
+  "IMAGE": "https://security_auth.png",
+  "VALUESAPID": "Change",
+  "DESCRIPTION": "Proceso de monitoreo de todos los privilegios de usuarios en el sistema.",
+	"ROUTE":"/nuevaRuta"
+}
 `PATCH` |   /api/security/deleteview?valueid=IdApplications-IdInversions | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
 `POST` | /api/inv/DeleteViewByCompanyId | Eliminado físico (Rol Eliminado) | Yes | Pedro y Jesus| { "COMPANYID": 10 }
 
@@ -45,7 +73,19 @@ Endpoint | Route | Description | Finish| Creator | Body
 Endpoint | Route | Description | Finish| Creator | Body
 ---------|----------|----------|----------|---------- | ---------
 `POST` | /api/inv/CreateProcess | Nuevo proceso | si | Aaron| none
-`PUT` | /api/security/values/processes?valueid=IdAllPrivilegesMonitoring | Actualizar | Yes | Joya| none
+`PUT` | /api/security/values/processes?valueid=IdAllPrivilegesMonitoring | Actualizar | Yes | Joya| {
+	"COMPANYID": 1,
+	"CEDIID": 1,
+	"LABELID":"IdProcesses",
+	"VALUEPAID": "IdViews-IdUserManagementView",
+  "VALUEID": "IdAllPrivilegesMonitoring",
+  "VALUE": "Monitoreo de Todos los Privilegios",
+  "ALIAS": "ALL_PRIV",
+  "SEQUENCE": 1,
+  "IMAGE": "https://security_auth.png",
+  "VALUESAPID": "Change",
+  "DESCRIPTION": "Proceso de monitoreo de todos los privilegios de usuarios en el sistema."
+}
 `PATCH` |   /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
 `DELETE` |  /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus| none
 
