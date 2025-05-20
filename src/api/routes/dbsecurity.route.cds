@@ -25,6 +25,11 @@ service inversionsRoute @(path: '/api/inv') {
     @Core.Description: 'get-catalogs-by-valueid'
     @path            : 'GetCatalogsByValueId'
     function GetCatalogsByValueId(ValueId: String) returns array of catalogs;
+
+    @Core.Description: 'get-one-catalogs-by-valueid'
+    @path            : 'GetCatalogOne'
+    function GetCatalogOne(ValueId: String) returns array of catalogs;
+    
     //******************* PROCESS ***********************************
     @Core.Description: 'get-all-process'
     @path            : 'GetAllProcess'

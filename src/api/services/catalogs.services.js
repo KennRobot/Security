@@ -11,6 +11,24 @@ async function GetAllCatalogs(req) {
   }
 }
 
+async function GetCatalogOne(req) {
+  try {
+    const { VALUEID } = req.data;  // Asumiendo que el ID es un parámetro en el cuerpo de la solicitud
+
+    // Buscar el registro en MongoDB
+    const catalog = await catalogsSchema.findOne({ VALUEID }).lean();
+
+    if (!catalog) {
+      throw new Error(`No se encontró un registro con el VALUEID ${VALUEID}`);
+    }
+
+    return catalog;
+  } catch (error) {
+    throw new Error(`Error al obtener el registro de precios por ID: ${error.message}`);
+  }
+}
+
+
 async function CatalogosDeleteById(req) {
   try {
     // Obtener el parámetro directamente desde el body o query (según cómo lo mandes)
@@ -69,5 +87,5 @@ module.exports = {
   GetAllCatalogs,
   CatalogosDeleteById,
   GetCatalogsByApplicationId,
-  GetCatalogsByValueId
+  GetCatalogsByValueId, GetCatalogOne
 };
