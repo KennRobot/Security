@@ -4,17 +4,17 @@ Endpoint | Route | Description | Finish | Creator | Body
 ---------|----------|----------|----------|---------- |----------
 `GET` | /api/inv/GetAllCatalogs | todos los catalogos | Yes | Kennby | none
 `GET` | /api/security/catalogs?labelid=IdApplications | un solo catalogo | No| Kennby| none
-`GET` | /api/security/catalogs?LabelId=IdApplication | filtro catalogos por IdApplication| No| Adolfo | none
+`GET` | /api/security/catalogs?LabelId=IdApplication | filtro catalogos por IdApplication| yes | Adolfo | none
 `GET` | /api/security/catalogs?ValueId=IdSecurity | filtro catalogos por ValueId | No| Adolfo | none
 `PUT` | /api/security/catalogs?ValueId=IdSecurity | actualizar catalogo | No| aaron | none
-`DELETE` | /api/security/catalogs?ValueId=IdSecurity | alimnar catalogo | Tes | joya| none
+`DELETE` | /api/security/catalogs?ValueId=IdSecurity | alimnar catalogo | yes | joya| none
 
 # EndPoints para Usuarios
 
 Endpoint | Route | Description | Finish | Creator | Body
 ---------|----------|----------|----------|---------- | ---------
 `GET` | /api/inv/users | todos los usuarios | Yes | Kennby| none
-`GET` | /api/inv/users?userid=FIBARRAC | un solo usuario | No| Adolfo| none
+`GET` | /api/inv/users?userid=FIBARRAC | un solo usuario | yes| Adolfo| none
 `POST` | /api/inv/CreateUser | crear nuevo usuario | No | Aaron| none
 `PUT` | /api/inv/users?userid=CHALMUNOZOR | Actualizar usuario (validar que el rol Exista) | YES | Joya| none
 `PATCH` | /api/inv/deleteusers?userid=CHALMUNOZOR | Borrado lógico (Usuario Inactivo) | No | Pedro y Jesus| none
@@ -24,8 +24,8 @@ Endpoint | Route | Description | Finish | Creator | Body
 
 Endpoint | Route | Description | Finish| Creator | Body
 ---------|----------|----------|----------|---------- | ----------
-`GET` | /api/security/roles | Todos los roles con procesos y privilegios | Yes| Kennby| none
-`GET` | /api/security/roles?roleid=IdWarehouseManage | Obtener usuarios por roles | No | Adolfo| none
+`GET` | /api/inv/roles | Todos los roles con procesos y privilegios | Yes| Kennby| none
+`GET` | /api/inv/roles?roleid=IdWarehouseManage | Obtener usuarios por roles | yes | Adolfo| none
 `POST` | /api/security/roles | Crear rol (Validar que el privilegio y el proceso existan en la colección correspondiente) | No | Aaron| none
 `PUT` | /api/security/roles?roleid=IdWarehouseManager | Actualizar rol (Validar que el privilegio y el proceso existan) | YES | Joya| {"ROLEID": "IdWarehouseManager","PROCESSES": [{"PROCESSID": "IdProcesses","APPLICATIONNAME":"SECURYTY-Update","PRIVILEGES":[{"PRIVILEGEID":	"IdRead","PRIVILEGENAME":	"update-Read"}]}]}
 `POST` |  /api/inv/UpdateRoleActivation | Borrado lógico (Rol Inactivo) | Yes | Pedro y Jesus| { "roleid": "IdWarehouseManager", "activated": false}
