@@ -38,31 +38,90 @@ async function getRoleWithUsers(req) {
 
 async function UpdateRolByRoleID(req) {
   try {
-    const { ROLEID, PROCESSES } = req.data;
+    const { ROLEID, PROCESSES = [], ...rest } = req.data;
 
-    // Validación: verificar que todos los procesos existan
-    for (const proc of PROCESSES) {
-      const proceso = await processSchema.findOne({ LABELID: proc.PROCESSID });
-      if (!proceso) {
-        return { error: `Proceso ${proc.PROCESSID} no encontrado` };
-      }
-    }
-
-    // Solo actualizar el campo PROCESSES
-    const updatedDoc = await RolesSchema.findOneAndUpdate(
-      { ROLEID },
-      { $set: { PROCESSES } }
-    );
-
-    if (!updatedDoc) {
+    // Buscar el rol actual
+    const rol = await RolesSchema.findOne({ ROLEID });
+    if (!rol) {
       return { success: false, message: 'No se encontró un documento con ese ROLEID.' };
     }
 
+    // Actualizar campos generales si vienen en la petición
+    const camposGenerales = {};
+    for (const key in rest) {
+      if (rest[key] !== undefined) {
+        camposGenerales[key] = rest[key];
+      }
+    }
+
+    if (Object.keys(camposGenerales).length > 0) {
+      await RolesSchema.updateOne({ ROLEID }, { $set: camposGenerales });
+    }
+
+    // Clonamos la lista actual de procesos
+    const procesosActuales = rol.PROCESSES || [];
+
+    for (const nuevoProceso of PROCESSES) {
+      // Validar existencia del proceso
+      const procesoValido = await processSchema.findOne({ LABELID: nuevoProceso.PROCESSID });
+      if (!procesoValido) {
+        return { success: false, message: `Proceso ${nuevoProceso.PROCESSID} no encontrado.` };
+      }
+
+      const indexProceso = procesosActuales.findIndex(p => p.PROCESSID === nuevoProceso.PROCESSID);
+
+      if (indexProceso === -1) {
+        // Proceso nuevo, agregar completo
+        procesosActuales.push(nuevoProceso);
+      } else {
+        // Proceso existente, actualizar campos básicos
+        const procesoExistente = procesosActuales[indexProceso];
+        const procesoActualizado = {
+          ...procesoExistente,
+          ...nuevoProceso
+        };
+
+        // Si vienen privilegios en el JSON, actualizar/agregar los correspondientes
+        if (Array.isArray(nuevoProceso.PRIVILEGES)) {
+          const privilegiosActuales = procesoExistente.PRIVILEGES || [];
+
+          for (const nuevoPrivilegio of nuevoProceso.PRIVILEGES) {
+            const indexPrivilegio = privilegiosActuales.findIndex(
+              p => p.PRIVILEGEID === nuevoPrivilegio.PRIVILEGEID
+            );
+
+            if (indexPrivilegio === -1) {
+              privilegiosActuales.push(nuevoPrivilegio);
+            } else {
+              privilegiosActuales[indexPrivilegio] = {
+                ...privilegiosActuales[indexPrivilegio],
+                ...nuevoPrivilegio
+              };
+            }
+          }
+
+          procesoActualizado.PRIVILEGES = privilegiosActuales;
+        }
+
+        procesosActuales[indexProceso] = procesoActualizado;
+      }
+    }
+
+    // Guardar los cambios
+    const updatedDoc = await RolesSchema.findOneAndUpdate(
+      { ROLEID },
+      { $set: { PROCESSES: procesosActuales } },
+      { new: true }
+    );
+
     return { success: true, data: updatedDoc };
   } catch (error) {
+    console.error('Error en UpdateRolByRoleID:', error);
     return { success: false, message: 'Error al actualizar el documento.', error };
   }
 }
+
+
 
 //Delete Logico de roles 
 async function UpdateRoleActivation(req) {

@@ -1,6 +1,7 @@
 //************* SERVICIO PARA MONGO DB */
 const usersSchema = require('../models/SchemasMongoDB/usuarios');
 const rolesSchema = require('../models/SchemasMongoDB/roles');
+const processSchema = require('../models/SchemasMongoDB/procesos');
 
 async function GetAllUsers(req) {
   try {
@@ -71,91 +72,120 @@ async function CreateUser(req) {
   }
 }
  
+//PUT de usuario
 async function UpdateUserByUSERID(req) {
   try {
-    const { USERID, ROLES } = req.data;
+    const {
+      USERID,
+      ROLES,
+      ...camposRestantes
+    } = req.data;
 
     const usuario = await usersSchema.findOne({ USERID });
     if (!usuario) {
       return { success: false, message: 'No se encontró un usuario con ese USERID.' };
     }
 
-    for (const nuevoRol of ROLES) {
-      // Verificar que el rol exista
-      const rolValido = await rolesSchema.findOne({ ROLEID: nuevoRol.ROLEID });
-      if (!rolValido) {
-        return { error: `Rol ${nuevoRol.ROLEID} no encontrado en rolesSchema.` };
+    // 1. Actualizar los campos generales proporcionados (sin borrar lo que no se mande)
+    const datosActualizar = {};
+    for (const key in camposRestantes) {
+      if (camposRestantes[key] !== undefined) {
+        datosActualizar[key] = camposRestantes[key];
       }
+    }
 
-      const indexRol = usuario.ROLES.findIndex(r => r.ROLEID === nuevoRol.ROLEID);
+    if (Object.keys(datosActualizar).length > 0) {
+      await usersSchema.updateOne({ USERID }, { $set: datosActualizar });
+    }
 
-      if (indexRol === -1) {
-        // Rol no existe, agregar todo el objeto nuevo
-        await usersSchema.updateOne(
-          { USERID },
-          { $push: { ROLES: nuevoRol } }
-        );
-      } else {
-        // Rol existe: actualizar campos básicos
-        const existingRol = usuario.ROLES[indexRol];
-        const rolUpdate = {
-          [`ROLES.${indexRol}.ROLEIDSAP`]: nuevoRol.ROLEIDSAP,
-          [`ROLES.${indexRol}.ROLENAME`]: nuevoRol.ROLENAME,
-          [`ROLES.${indexRol}.DESCRIPTION`]: nuevoRol.DESCRIPTION
-        };
+    // 2. Procesar los ROLES (si vienen en el JSON)
+    if (Array.isArray(ROLES)) {
+      const rolesActuales = usuario.ROLES || [];
 
-        await usersSchema.updateOne({ USERID }, { $set: rolUpdate });
+      for (const nuevoRol of ROLES) {
+        // Verificar que el rol exista
+        const rolValido = await rolesSchema.findOne({ ROLEID: nuevoRol.ROLEID });
+        if (!rolValido) {
+          return { error: `Rol ${nuevoRol.ROLEID} no encontrado en rolesSchema.` };
+        }
 
-        // Procesar cada proceso
-        for (const nuevoProceso of nuevoRol.PROCESSES || []) {
-          const indexProceso = existingRol.PROCESSES.findIndex(
-            p => p.PROCESSID === nuevoProceso.PROCESSID
-          );
+        const indexRol = rolesActuales.findIndex(r => r.ROLEID === nuevoRol.ROLEID);
 
-          if (indexProceso === -1) {
-            // Si el proceso no existe, lo agregamos
-            await usersSchema.updateOne(
-              { USERID },
-              { $push: { [`ROLES.${indexRol}.PROCESSES`]: nuevoProceso } }
-            );
-          } else {
-            // Proceso existe, actualizar campos básicos
-            const procesoUpdate = {
-              [`ROLES.${indexRol}.PROCESSES.${indexProceso}.PROCESSNAME`]: nuevoProceso.PROCESSNAME,
-              [`ROLES.${indexRol}.PROCESSES.${indexProceso}.VIEWID`]: nuevoProceso.VIEWID,
-              [`ROLES.${indexRol}.PROCESSES.${indexProceso}.VIEWNAME`]: nuevoProceso.VIEWNAME,
-              [`ROLES.${indexRol}.PROCESSES.${indexProceso}.APPLICATIONID`]: nuevoProceso.APPLICATIONID,
-              [`ROLES.${indexRol}.PROCESSES.${indexProceso}.APPLICATIONNAME`]: nuevoProceso.APPLICATIONNAME
-            };
+        if (indexRol === -1) {
+          // Agregar el rol completo
+          await usersSchema.updateOne({ USERID }, { $push: { ROLES: nuevoRol } });
+        } else {
+          // Actualizar campos básicos del rol
+          const camposRol = {
+            [`ROLES.${indexRol}.ROLEIDSAP`]: nuevoRol.ROLEIDSAP,
+            [`ROLES.${indexRol}.ROLENAME`]: nuevoRol.ROLENAME,
+            [`ROLES.${indexRol}.DESCRIPTION`]: nuevoRol.DESCRIPTION
+          };
+          await usersSchema.updateOne({ USERID }, { $set: camposRol });
 
-            await usersSchema.updateOne({ USERID }, { $set: procesoUpdate });
+          // Procesar los procesos si vienen
+          if (Array.isArray(nuevoRol.PROCESSES)) {
+            const procesosActuales = usuario.ROLES[indexRol].PROCESSES || [];
 
-            // Procesar privilegios
-            for (const nuevoPrivilegio of nuevoProceso.PRIVILEGES || []) {
-              const privilegioExistente = usuario.ROLES[indexRol].PROCESSES[indexProceso].PRIVILEGES || [];
-              const indexPrivilegio = privilegioExistente.findIndex(
-                p => p.PRIVILEGEID === nuevoPrivilegio.PRIVILEGEID
+            for (const nuevoProceso of nuevoRol.PROCESSES) {
+              const procesoValido = await processSchema.findOne({ LABELID: nuevoProceso.PROCESSID });
+              if (!procesoValido) {
+                return { error: `Proceso ${nuevoProceso.PROCESSID} no encontrado en processSchema.` };
+              }
+
+              const indexProceso = procesosActuales.findIndex(
+                p => p.PROCESSID === nuevoProceso.PROCESSID
               );
 
-              if (indexPrivilegio === -1) {
+              if (indexProceso === -1) {
+                // Agregar proceso nuevo
                 await usersSchema.updateOne(
                   { USERID },
-                  {
-                    $push: {
-                      [`ROLES.${indexRol}.PROCESSES.${indexProceso}.PRIVILEGES`]: nuevoPrivilegio
-                    }
-                  }
+                  { $push: { [`ROLES.${indexRol}.PROCESSES`]: nuevoProceso } }
                 );
               } else {
-                // Actualizar nombre del privilegio si ya existe
-                await usersSchema.updateOne(
-                  { USERID },
-                  {
-                    $set: {
-                      [`ROLES.${indexRol}.PROCESSES.${indexProceso}.PRIVILEGES.${indexPrivilegio}.PRIVILEGENAME`]: nuevoPrivilegio.PRIVILEGENAME
+                // Actualizar campos del proceso existente
+                const camposProceso = {
+                  [`ROLES.${indexRol}.PROCESSES.${indexProceso}.PROCESSNAME`]: nuevoProceso.PROCESSNAME,
+                  [`ROLES.${indexRol}.PROCESSES.${indexProceso}.VIEWID`]: nuevoProceso.VIEWID,
+                  [`ROLES.${indexRol}.PROCESSES.${indexProceso}.VIEWNAME`]: nuevoProceso.VIEWNAME,
+                  [`ROLES.${indexRol}.PROCESSES.${indexProceso}.APPLICATIONID`]: nuevoProceso.APPLICATIONID,
+                  [`ROLES.${indexRol}.PROCESSES.${indexProceso}.APPLICATIONNAME`]: nuevoProceso.APPLICATIONNAME
+                };
+                await usersSchema.updateOne({ USERID }, { $set: camposProceso });
+
+                // Procesar privilegios
+                if (Array.isArray(nuevoProceso.PRIVILEGES)) {
+                  const privilegiosActuales = procesosActuales[indexProceso]?.PRIVILEGES || [];
+
+                  for (const nuevoPrivilegio of nuevoProceso.PRIVILEGES) {
+                    const indexPrivilegio = privilegiosActuales.findIndex(
+                      p => p.PRIVILEGEID === nuevoPrivilegio.PRIVILEGEID
+                    );
+
+                    if (indexPrivilegio === -1) {
+                      // Agregar nuevo privilegio
+                      await usersSchema.updateOne(
+                        { USERID },
+                        {
+                          $push: {
+                            [`ROLES.${indexRol}.PROCESSES.${indexProceso}.PRIVILEGES`]: nuevoPrivilegio
+                          }
+                        }
+                      );
+                    } else {
+                      // Actualizar privilegio existente
+                      await usersSchema.updateOne(
+                        { USERID },
+                        {
+                          $set: {
+                            [`ROLES.${indexRol}.PROCESSES.${indexProceso}.PRIVILEGES.${indexPrivilegio}.PRIVILEGENAME`]: nuevoPrivilegio.PRIVILEGENAME
+                          }
+                        }
+                      );
                     }
                   }
-                );
+                }
               }
             }
           }
@@ -163,7 +193,10 @@ async function UpdateUserByUSERID(req) {
       }
     }
 
-    return { success: true, message: 'Usuario actualizados correctamente.' };
+    // 3. Devolver el usuario actualizado
+    const usuarioActualizado = await usersSchema.findOne({ USERID });
+    return { success: true, data: usuarioActualizado };
+
   } catch (error) {
     return { success: false, message: 'Error al actualizar el usuario.', error };
   }

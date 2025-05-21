@@ -48,7 +48,8 @@ async function UpdateViewByCompanyId(req) {
 
     const updatedDoc = await viewsSchema.findOneAndUpdate(
       { LABELID },
-      { $set: updateData }
+      { $set: updateData },
+      { new: true }
     );
 
     if (!updatedDoc) {

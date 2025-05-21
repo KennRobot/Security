@@ -37,7 +37,7 @@ async function CreateProcessService(req) {
 
 
 
-async function UpdateProcesByCompanyId(req) {
+async function UpdateProcesByLABELId(req) {
   try {
     const { LABELID, ...rest } = req.data;
 
@@ -68,5 +68,5 @@ async function UpdateProcesByCompanyId(req) {
 module.exports = {
   GetAllProcess,
   CreateProcessService,
-  UpdateProcesByCompanyId
+  UpdateProcesByLABELId
 };

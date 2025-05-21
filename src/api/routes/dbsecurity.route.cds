@@ -56,9 +56,9 @@ service inversionsRoute @(path: '/api/inv') {
 };
 
 
-    @Core.Description: 'update-process-by-company-id'
-    @path: 'UpdateProcesByCompanyId'
-    action UpdateProcesByCompanyId(
+    @Core.Description: 'update-process-by-label-id'
+    @path: 'UpdateProcesByLABELId'
+    action UpdateProcesByLABELId(
         COMPANYID: Integer,
         CEDIID: Integer,
         LABELID: String,
@@ -84,7 +84,30 @@ service inversionsRoute @(path: '/api/inv') {
     @Core.Description: 'actualizar-usuario'
     @path            : 'UpdateUserByUSERID'
     action UpdateUserByUSERID(
-        USERID: String,
+        USERID:     String,
+        PASSWORD:   String,
+        USERNAME:   String,
+        ALIAS:      String,
+        FIRSTNAME:  String,
+        LASTNAME:   String,
+        BIRTHDAYDATE: String,
+        COMPANYID:  Integer,
+        COMPANYNAME: String,
+        COMPANYALIAS: String,
+        CEDIID:     String,
+        EMPLOYEEID: String,
+        EMAIL:      String,
+        PHONENUMBER: String,
+        EXTENSION:  String,
+        DEPARTMENT: String,
+        FUNCTION:   String,
+        STREET:     String,
+        POSTALCODE: Integer,
+        CITY:       String,
+        REGION:     String,
+        STATE:      String,
+        COUNTRY:    String,
+        AVATAR:     String,
         ROLES: array of RolesInput
     ) returns Boolean;
 
@@ -152,6 +175,8 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'UpdateRolByRoleID'
     action UpdateRolByRoleID(
         ROLEID: String,
+        ROLENAME: String,
+        DESCRIPTION: String,
         PROCESSES: array of ProcessInput
         ) returns Boolean;
 
