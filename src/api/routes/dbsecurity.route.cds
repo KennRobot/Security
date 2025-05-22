@@ -30,6 +30,23 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'GetCatalogOne'
     function GetCatalogOne(ValueId: String) returns array of catalogs;
     
+    @Core.Description: 'Actualizar catálogo por VALUEID'
+    @path: 'UpdateCatalogByValueId'
+    action UpdateCatalogByValueId(
+    VALUEID: String,
+    LABEL: String,
+    INDEX: String,
+    COLLECTION: String,
+    SECTION: String,
+    SEQUENCE: Integer,
+    IMAGE: String,
+    DESCRIPTION: String,
+    REGUSER: String
+    ) returns {
+    success: Boolean;
+    message: String;
+    };
+
     //******************* PROCESS ***********************************
     @Core.Description: 'get-all-process'
     @path            : 'GetAllProcess'
@@ -170,6 +187,41 @@ service inversionsRoute @(path: '/api/inv') {
     @Core.Description: 'get-role-with-users-by-roleid'
     @path            : 'GetRoleWithUsers'
     function getRoleWithUsersHandler(roleid: String) returns roles;
+
+@Core.Description: 'crear-rol-con-validacion'
+@path: 'CreateRole'
+action CreateRole(
+  ROLEID: String,
+  ROLENAME: String,
+  DESCRIPTION: String,
+  PROCESSES: array of {
+    PROCESSID: String;
+    PROCESSNAME: String;
+    APPLICATIONID: String;
+    APPLICATIONNAME: String;
+    VIEWID: String;
+    VIEWNAME: String;
+    PRIVILEGES: array of {
+      PRIVILEGEID: String;
+      PRIVILEGENAME: String;
+    };
+  },
+  DETAIL_ROW: {
+    ACTIVED: Boolean;
+    DELETED: Boolean;
+    DETAIL_ROW_REG: array of {
+      CURRENT: Boolean;
+      REGDATE: DateTime;
+      REGTIME: DateTime;
+      REGUSER: String;
+    };
+  }
+) returns {
+  success: Boolean;
+  message: String;
+};
+
+
 
     @Core.Description: 'put-role-with-users-by-roleid'
     @path            : 'UpdateRolByRoleID'

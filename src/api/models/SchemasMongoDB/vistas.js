@@ -15,7 +15,15 @@ const viewsSchema = new mongoose.Schema({
   ROUTE: { type: String }
 }, {
   collection: 'views',
-  timestamps: true // Para createdAt y updatedAt
+  timestamps: true, // Para createdAt y updatedAt
+  versionKey: false
 });
+
+
+
+
+
+viewsSchema.set('toObject', { versionKey: false });
+viewsSchema.set('toJSON', { versionKey: false });
 
 module.exports = mongoose.model('views', viewsSchema);

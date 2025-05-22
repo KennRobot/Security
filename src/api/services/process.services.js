@@ -2,14 +2,21 @@
 const processSchema = require('../models/SchemasMongoDB/procesos');
 
 
-async function GetAllProcess(req) {
+async function GetAllProcess() {
   try {
-    let process = await processSchema.find().lean(); 
-    return process;
+    const allProcesses = await processSchema.find({});
+    const cleanedProcesses = allProcesses.map(proc => {
+      const { __v, ...cleaned } = proc.toObject();
+      return cleaned;
+    });
+
+    return cleanedProcesses;
   } catch (error) {
-    return error;
+    console.error('Error al obtener todos los procesos:', error);
+    return [];
   }
 }
+
 
 async function CreateProcessService(req) {
   try {

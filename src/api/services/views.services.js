@@ -3,28 +3,39 @@ const viewsSchema = require('../models/SchemasMongoDB/vistas');
 
 async function GetAllViews(req) {
   try {
-    let views = await viewsSchema.find().lean(); 
-    return views;
+    const allViews = await viewsSchema.find({});
+    const cleanedViews = allViews.map(view => {
+      const { __v, ...cleaned } = view.toObject();
+      return cleaned;
+    });
+
+    return cleanedViews;
   } catch (error) {
-    return error;
+    console.error('Error al obtener todas las vistas:', error);
+    return [];
   }
 }
 
-const CreateViewService = async (req) => {
+
+async function CreateViewService(req) {
   try {
     const data = req.data;
 
-    if (!data.updatedAt) {
-      data.updatedAt = new Date();
-    }
+    if (!data.updatedAt) data.updatedAt = new Date();
+    if (!data.createdAt) data.createdAt = new Date();
 
-    const newView = new viewsSchema(data); // ← aquí el cambio
-    await newView.save();
+    const newView = new viewsSchema(data);
+    const saved = await newView.save();
+
+    // Convertimos el documento a objeto plano y eliminamos __v
+    const cleanResult = saved.toObject();
+    delete cleanResult.__v;
 
     return {
       success: true,
-      message: 'Vista creada exitosamente'
+      data: cleanResult
     };
+
   } catch (error) {
     console.error('Error al crear la vista:', error);
     return {
@@ -32,7 +43,8 @@ const CreateViewService = async (req) => {
       message: 'Error al crear la vista'
     };
   }
-};
+}
+
 
 async function UpdateViewByCompanyId(req) {
   try {

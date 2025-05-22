@@ -27,7 +27,12 @@ const catalogoSchema = new mongoose.Schema({
   }
 }, {
   collection: 'catalogs',
-  timestamps: true // Opcional: para agregar createdAt y updatedAt automáticos
+  timestamps: true, // Opcional: para agregar createdAt y updatedAt automáticos
+  versionKey: false
 });
 
 module.exports = mongoose.model('catalogs', catalogoSchema);
+
+console.log('✅ Se está usando schema de catalogs con versionKey: false');
+module.exports = mongoose.model('catalogs', catalogoSchema);
+

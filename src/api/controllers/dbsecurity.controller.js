@@ -1,10 +1,10 @@
 const cds = require('@sap/cds');
-const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCatalogsByValueId, GetCatalogOne } = require('../services/catalogs.services');
+const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCatalogsByValueId, GetCatalogOne,UpdateCatalogByValueId } = require('../services/catalogs.services');
 const { GetAllProcess, UpdateProcesByLABELId, CreateProcessService } = require('../services/process.services');
-const { GetAllUsers, UpdateUserByUSERID } = require('../services/users.services');
+const { GetAllUsers, UpdateUserByUSERID, CreateUser } = require('../services/users.services');
 const { GetAllViews, UpdateViewByCompanyId, CreateViewService, DeleteViewByCompanyId } = require('../services/views.services');
-const { GetAllRoles, getRoleWithUsers, UpdateRolByRoleID, UpdateRoleActivation, DeleteRoleById } = require('../services/roles.services');
-const { CreateUser } = require('../services/users.services');
+const { GetAllRoles, getRoleWithUsers,CreateRoleService, UpdateRolByRoleID, UpdateRoleActivation, DeleteRoleById } = require('../services/roles.services');
+
 
 
 
@@ -29,6 +29,10 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
         this.on('GetCatalogOne', async (req) => {
             return await GetCatalogOne(req);
         })
+        this.on('UpdateCatalogByValueId', async (req) => {
+            return await UpdateCatalogByValueId(req);
+          });
+          
          //****************** PARA PROCESS ***********************/
         this.on('GetAllProcess', async (req) => {
             return await GetAllProcess(req);
@@ -77,6 +81,10 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
             return await GetAllRoles(req);
         });
         
+        this.on('CreateRole', async (req) => {
+            return await CreateRoleService(req);
+          });
+
         this.on('UpdateRolByRoleID', async (req) => {
             return await UpdateRolByRoleID(req);
         });

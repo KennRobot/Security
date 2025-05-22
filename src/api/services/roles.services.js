@@ -1,7 +1,15 @@
  //************* SERVICIO PARA MONGO DB */
-const RolesSchema = require('../models/SchemasMongoDB/roles');
+
+ const mongoose = require('mongoose');
+
+
+ const RolesSchema = require('../models/SchemasMongoDB/roles');
 const UserSchema = require('../models/SchemasMongoDB/usuarios');
 const processSchema = require('../models/SchemasMongoDB/procesos');
+const catalogSchema = require('../models/SchemasMongoDB/catalogos');
+const viewsSchema = require('../models/SchemasMongoDB/vistas');
+
+
 
 
 //**************  GET ALLL */
@@ -35,6 +43,85 @@ async function getRoleWithUsers(req) {
         USERS: formattedUsers
     };
 }
+
+//*************** CREAR ROL  */
+async function CreateRoleService(req) {
+  try {
+    const data = req.data;
+    const processes = data.PROCESSES;
+    const allRoles = await RolesSchema.find().lean();
+
+    for (const process of processes) {
+      // Buscar por LABELID en lugar de VALUEID
+      const foundProcess = await processSchema.findOne({ LABELID: process.PROCESSID });
+      if (!foundProcess) {
+        return {
+          success: false,
+          message: `El proceso con ID '${process.PROCESSID}' no existe.`
+        };
+      }
+
+      const foundView = await viewsSchema.findOne({ LABELID: process.VIEWID }); // ← Aquí el cambio
+      if (!foundView) {
+        return {
+          success: false,
+          message: `La vista con ID '${process.VIEWID}' no existe.`
+        };
+      }
+
+      for (const privilege of process.PRIVILEGES) {
+        let exists = false;
+
+        for (const role of allRoles) {
+          for (const proc of role.PROCESSES || []) {
+            for (const priv of proc.PRIVILEGES || []) {
+              if (priv.PRIVILEGEID === privilege.PRIVILEGEID) {
+                exists = true;
+                break;
+              }
+            }
+            if (exists) break;
+          }
+          if (exists) break;
+        }
+
+        if (!exists) {
+          return {
+            success: false,
+            message: `El privilegio con ID '${privilege.PRIVILEGEID}' no existe.`
+          };
+        }
+
+        privilege._id = new mongoose.Types.ObjectId();
+      }
+
+      process._id = new mongoose.Types.ObjectId();
+    }
+
+    if (data.DETAIL_ROW?.DETAIL_ROW_REG) {
+      data.DETAIL_ROW.DETAIL_ROW_REG = data.DETAIL_ROW.DETAIL_ROW_REG.map(reg => ({
+        ...reg,
+        REGDATE: new Date(),
+        REGTIME: new Date(),
+        _id: new mongoose.Types.ObjectId()
+      }));
+    }
+
+    const newRole = new RolesSchema(data);
+const saved = await newRole.save();
+return saved.toObject(); // ← esta línea es la que previene el error
+
+
+  } catch (error) {
+    console.error('Error al crear el rol:', error);
+    return {
+      success: false,
+      message: 'Error interno del servidor.'
+    };
+  }
+}
+
+
 
 async function UpdateRolByRoleID(req) {
   try {
@@ -166,6 +253,7 @@ async function DeleteRoleById(req) {
 module.exports = {
   GetAllRoles,
   getRoleWithUsers,
+  CreateRoleService,
   UpdateRolByRoleID,
   UpdateRoleActivation,
   DeleteRoleById
