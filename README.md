@@ -6,7 +6,7 @@ Endpoint | Route | Description | Finish | Creator | Body
 `GET` | /api/inv/GetCatalogOne | un solo catalogo | Yes| Kennby| {"ValueId":"IdInversions"}
 `GET` | /api/security/catalogs?LabelId=IdApplication | filtro catalogos por IdApplication| yes | Adolfo | none
 `GET` | /api/security/catalogs?ValueId=IdSecurity | filtro catalogos por ValueId | No| Adolfo | none
-`PUT` | /api/security/catalogs?ValueId=IdSecurity | actualizar catalogo | No| aaron | none
+`PUT` | /api/security/catalogs?ValueId=IdSecurity | actualizar catalogo | Yes | aaron | none
 `DELETE` | /api/security/catalogs?ValueId=IdSecurity | alimnar catalogo | yes | joya| none
 
 # EndPoints para Usuarios
