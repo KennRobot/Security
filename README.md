@@ -6,7 +6,8 @@ Endpoint | Route | Description | Finish | Creator | Body
 `GET` | /api/inv/GetCatalogOne | un solo catalogo | Yes| Kennby| {"ValueId":"IdInversions"}
 `GET` | /api/security/catalogs?LabelId=IdApplication | filtro catalogos por IdApplication| yes | Adolfo | none
 `GET` | /api/security/catalogs?ValueId=IdSecurity | filtro catalogos por ValueId | No| Adolfo | none
-`PUT` | /api/security/catalogs?ValueId=IdSecurity | actualizar catalogo | Yes | aaron | none
+`PUT` | /api/security/catalogs?ValueId=IdSecurity | actualizar catalogo | Yes | aaron | {"VALUEID":"IdInvestments","LABEL":"IdApplicationsUpdated","INDEX":"INV-2025-NEW","COLLECTION":"modulos","SECTION":"recomendaciones","SEQUENCE":22,"IMAGE":"https://investmentrecommendation.com/nueva.png","DESCRIPTION":"Catálogo actualizado para recomendaciones de inversiones del 2025.","REGUSER":"FIBARRAC"}
+
 `DELETE` | /api/security/catalogs?ValueId=IdSecurity | alimnar catalogo | yes | joya| none
 
 # EndPoints para Usuarios
