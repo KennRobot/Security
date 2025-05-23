@@ -1,7 +1,7 @@
 const cds = require('@sap/cds');
 const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCatalogsByValueId } = require('../services/catalogs.services');
 const { GetAllProcess, UpdateProcesByCompanyId } = require('../services/process.services');
-const { GetAllUsers } = require('../services/users.services');
+const { GetAllUsers, DeleteUserLogical, DeleteUserPhysical } = require('../services/users.services');
 const { GetAllViews, UpdateViewByCompanyId } = require('../services/views.services');
 const { GetAllRoles, getRoleWithUsers } = require('../services/roles.services');
 
@@ -32,9 +32,21 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
             return await UpdateProcesByCompanyId(req);
         });
 
+        this.on('DeleteProcessById', async (req) => {
+            return await DeleteProcessById(req);
+        });
+
          //****************** PARA USERS ***********************/
         this.on('GetAllUsers', async (req) => {
             return await GetAllUsers(req);
+        });
+        //borrado logico
+        this.on('DeleteUserLogical', async (req) => {
+            return await DeleteUserLogical(req);
+        });
+        //borrado fisico
+        this.on('DeleteUserPhysical', async (req) => {
+        return await DeleteUserPhysical(req);
         });
 
          //****************** PARA VIEWS ***********************/

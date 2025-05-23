@@ -46,10 +46,23 @@ service inversionsRoute @(path: '/api/inv') {
         DESCRIPTION: String
     ) returns Boolean;
 
+    @Core.Description: 'Delete-Process-By-Id'
+    @path: 'DeleteProcessById'
+    action DeleteProcessById( PROCESSID: String) returns Boolean;  
+
     //******************* USERS ***********************************
     @Core.Description: 'get-all-users'
     @path            : 'GetAllUsers'
     function GetAllUsers()   returns array of users;
+
+    @Core.Description: 'logical-delete-user'
+    @path: 'DeleteUserLogical'
+    action DeleteUserLogical(USERID: String, ACTIVED: Boolean) returns Boolean;
+
+    @Core.Description: 'physical-delete-user'
+    @path: 'DeleteUserPhysical'
+    action DeleteUserPhysical(USERID: String) returns Boolean;
+
 
     //******************* VIEWS ***********************************
     @Core.Description: 'get-all-views'
