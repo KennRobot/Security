@@ -17,8 +17,7 @@ Endpoint | Route | Description | Finish | Creator | Body
 ---------|----------|----------|----------|---------- | ---------
 `GET` | /api/inv/users | todos los usuarios | Yes | Kennby| none
 `GET` | /api/inv/users?userid=FIBARRAC | un solo usuario | yes| Adolfo| none
-`POST` | /api/inv/CreateUser | crear nuevo usuario | Yes | Aaron| {"user":{"USERID":"RLuna","PASSWORD":"1234","USERNAME":"Roberto Luna","ALIAS":"Robert","FIRSTNAME":"Roberto","LASTNAME":"Luna","BIRTHDAYDATE":"01.01.2000","COMPANYID":1001,"COMPANYNAME":"INSTITUTO TECNOLOGICO DE TEPIC","COMPANYALIAS":"ITT","CEDIID":"IdTepic","EMPLOYEEID":"1100","EMAIL":"pmartinez@ittepic.edu.mx","PHONENUMBER":"3232823141","EXTENSION":"","DEPARTMENT":"Sistemas","FUNCTION":"Estudiante","STREET":"Av. universidad 100","POSTALCODE":63000,"CITY":"Tepic","REGION":"","STATE":"Nayarit","COUNTRY":"Mexico","AVATAR":"","ROLES":[{"ROLEID":"IdWarehouseManager"}]}}
-
+`POST` | /api/inv/CreateUser | crear nuevo usuario | Yes | Aaron|
 `PUT` | /api/inv/UpdateUserByUSERID | Actualizar usuario (validar que el rol Exista) | YES | Joya| {"USERID": "AJOYA","BIRTHDAYDATE": "21.03.2001","ROLES" : [{"ROLEID":"IdWarehouseManager","ROLEIDSAP":"update-prueba","PROCESSES":[{"PROCESSID":"IdProcesses","PROCESSNAME":"proceso-update","PRIVILEGES":[{"PRIVILEGEID":"IdRead","PRIVILEGENAME":"Read"}]}]}]}
 `PATCH` | /api/inv/deleteusers?userid=CHALMUNOZOR | Borrado lógico (Usuario Inactivo) | No | Pedro y Jesus| none
 `DELETE` | /api/inv/deleteusers?userid=CHALMUNOZOR| Eliminado físico (Usuario Eliminado) | No | Pedro y Jesus| none
