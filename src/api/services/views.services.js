@@ -1,19 +1,54 @@
 //************* SERVICIO PARA MONGO DB */
 const viewsSchema = require('../models/SchemasMongoDB/vistas');
 
-
 async function GetAllViews(req) {
   try {
-    let views = await viewsSchema.find().lean(); 
-    return views;
+    const allViews = await viewsSchema.find({});
+    const cleanedViews = allViews.map(view => {
+      const { __v, ...cleaned } = view.toObject();
+      return cleaned;
+    });
+
+    return cleanedViews;
   } catch (error) {
-    return error;
+    console.error('Error al obtener todas las vistas:', error);
+    return [];
   }
 }
 
+
+async function CreateViewService(req) {
+  try {
+    const data = req.data;
+
+    if (!data.updatedAt) data.updatedAt = new Date();
+    if (!data.createdAt) data.createdAt = new Date();
+
+    const newView = new viewsSchema(data);
+    const saved = await newView.save();
+
+    // Convertimos el documento a objeto plano y eliminamos __v
+    const cleanResult = saved.toObject();
+    delete cleanResult.__v;
+
+    return {
+      success: true,
+      data: cleanResult
+    };
+
+  } catch (error) {
+    console.error('Error al crear la vista:', error);
+    return {
+      success: false,
+      message: 'Error al crear la vista'
+    };
+  }
+}
+
+
 async function UpdateViewByCompanyId(req) {
   try {
-    const { COMPANYID, ...rest } = req.data;
+    const { LABELID, ...rest } = req.data;
 
     // Filtramos solo los campos que realmente se enviaron (no undefined)
     const updateData = {};
@@ -24,13 +59,13 @@ async function UpdateViewByCompanyId(req) {
     }
 
     const updatedDoc = await viewsSchema.findOneAndUpdate(
-      { COMPANYID: COMPANYID },
+      { LABELID },
       { $set: updateData },
       { new: true }
     );
 
     if (!updatedDoc) {
-      return { success: false, message: 'No se encontró un documento con ese COMPANYID.' };
+      return { success: false, message: 'No se encontró un documento con ese LABELID.' };
     }
 
     return { success: true, data: updatedDoc };
@@ -38,9 +73,23 @@ async function UpdateViewByCompanyId(req) {
     return { success: false, message: 'Error al actualizar el documento.', error };
   }
 }
+    //Delete de views por id
+    async function DeleteViewByCompanyId(req) {
+      const { COMPANYID } = req.data;
+      if (COMPANYID == null) {
+        throw new Error("Se requiere 'COMPANYID'");
+      }
 
+      const result = await viewsSchema.findOneAndDelete({ COMPANYID }).lean();
+      if (!result) {
+        throw new Error(`No se encontró ningún documento con COMPANYID=${COMPANYID}`);
+      }
+      return result;
+    }
 
 module.exports = {
   GetAllViews,
-  UpdateViewByCompanyId
+  CreateViewService,
+  UpdateViewByCompanyId,
+  DeleteViewByCompanyId
 };

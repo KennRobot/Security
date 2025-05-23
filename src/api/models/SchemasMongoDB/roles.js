@@ -37,7 +37,9 @@ const roleSchema = new mongoose.Schema({
 
 }, {
   collection: 'roles',
-  timestamps: true // Opcional: para createdAt y updatedAt
+  timestamps: true, // Opcional: para createdAt y updatedAt
+  versionKey: false
+
 });
 
 module.exports = mongoose.model('roles', roleSchema);

@@ -11,6 +11,24 @@ async function GetAllCatalogs(req) {
   }
 }
 
+async function GetCatalogOne(req) {
+  try {
+    const { VALUEID } = req.data;  // Asumiendo que el ID es un parámetro en el cuerpo de la solicitud
+
+    // Buscar el registro en MongoDB
+    const catalog = await catalogsSchema.findOne({ VALUEID }).lean();
+
+    if (!catalog) {
+      throw new Error(`No se encontró un registro con el VALUEID ${VALUEID}`);
+    }
+
+    return catalog;
+  } catch (error) {
+    throw new Error(`Error al obtener el registro de precios por ID: ${error.message}`);
+  }
+}
+
+
 async function CatalogosDeleteById(req) {
   try {
     // Obtener el parámetro directamente desde el body o query (según cómo lo mandes)
@@ -64,10 +82,84 @@ async function GetCatalogsByValueId(req) {
     return results;
 }
 
+async function UpdateCatalogByValueId(req) {
+  try {
+    const {
+      VALUEID, LABEL, INDEX, COLLECTION, SECTION, SEQUENCE,
+      IMAGE, DESCRIPTION, REGUSER
+    } = req.data;
+
+    if (!VALUEID) {
+      return {
+        success: false,
+        message: "El campo VALUEID es obligatorio."
+      };
+    }
+
+    const catalog = await catalogsSchema.findOne({ VALUEID });
+
+    if (!catalog) {
+      return {
+        success: false,
+        message: `No se encontró un catálogo con VALUEID '${VALUEID}'.`
+      };
+    }
+
+    // Marcar los registros anteriores como CURRENT: false
+    if (catalog.DETAIL_ROW?.DETAIL_ROW_REG?.length > 0) {
+      catalog.DETAIL_ROW.DETAIL_ROW_REG.forEach(reg => {
+        reg.CURRENT = false;
+      });
+    }
+
+    // Agregar nuevo registro de auditoría
+    const newLog = {
+      CURRENT: true,
+      REGDATE: new Date(),
+      REGTIME: new Date(),
+      REGUSER: REGUSER || "system"
+    };
+
+    catalog.DETAIL_ROW.DETAIL_ROW_REG.push(newLog);
+
+    // Actualizar campos permitidos
+    if (LABEL !== undefined) catalog.LABEL = LABEL;
+    if (INDEX !== undefined) catalog.INDEX = INDEX;
+    if (COLLECTION !== undefined) catalog.COLLECTION = COLLECTION;
+    if (SECTION !== undefined) catalog.SECTION = SECTION;
+    if (SEQUENCE !== undefined) catalog.SEQUENCE = SEQUENCE;
+    if (IMAGE !== undefined) catalog.IMAGE = IMAGE;
+    if (DESCRIPTION !== undefined) catalog.DESCRIPTION = DESCRIPTION;
+
+    // Guardar cambios
+    await catalog.save();
+
+    // Convertir a objeto plano y eliminar __v antes de devolverlo
+    const cleaned = catalog.toObject();
+    delete cleaned.__v;
+
+    return {
+      success: true,
+      message: "Catálogo actualizado correctamente.",
+      data: cleaned
+    };
+
+  } catch (error) {
+    console.error("Error en UpdateCatalogByValueId:", error);
+    return {
+      success: false,
+      message: "Ocurrió un error al actualizar el catálogo.",
+      error: error.message
+    };
+  }
+}
 
 module.exports = {
   GetAllCatalogs,
   CatalogosDeleteById,
   GetCatalogsByApplicationId,
-  GetCatalogsByValueId
+  GetCatalogsByValueId, 
+  GetCatalogOne,
+  GetCatalogsByValueId,
+  UpdateCatalogByValueId
 };

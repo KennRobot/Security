@@ -1,4 +1,11 @@
 const cds = require('@sap/cds');
+const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCatalogsByValueId, GetCatalogOne,UpdateCatalogByValueId } = require('../services/catalogs.services');
+const { GetAllProcess, UpdateProcesByLABELId, CreateProcessService } = require('../services/process.services');
+const { GetAllUsers, UpdateUserByUSERID, CreateUser } = require('../services/users.services');
+const { GetAllViews, UpdateViewByCompanyId, CreateViewService, DeleteViewByCompanyId } = require('../services/views.services');
+const { GetAllRoles, getRoleWithUsers,CreateRoleService, UpdateRolByRoleID, UpdateRoleActivation, DeleteRoleById } = require('../services/roles.services');
+
+
 const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCatalogsByValueId } = require('../services/catalogs.services');
 const { GetAllProcess, UpdateProcesByCompanyId } = require('../services/process.services');
 const { GetAllUsers, DeleteUserLogical, DeleteUserPhysical } = require('../services/users.services');
@@ -23,13 +30,25 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
         this.on('GetCatalogsByValueId', async (req) => {
             return await GetCatalogsByValueId(req);
         });
+
+        this.on('GetCatalogOne', async (req) => {
+            return await GetCatalogOne(req);
+        })
+        this.on('UpdateCatalogByValueId', async (req) => {
+            return await UpdateCatalogByValueId(req);
+          });
+          
          //****************** PARA PROCESS ***********************/
         this.on('GetAllProcess', async (req) => {
             return await GetAllProcess(req);
         });
 
-        this.on('UpdateProcesByCompanyId', async (req) => {
-            return await UpdateProcesByCompanyId(req);
+        this.on('CreateProcess', async (req) => {
+            return await CreateProcessService(req);
+          });
+
+        this.on('UpdateProcesByLABELId', async (req) => {
+            return await UpdateProcesByLABELId(req);
         });
 
         this.on('DeleteProcessById', async (req) => {
@@ -40,6 +59,15 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
         this.on('GetAllUsers', async (req) => {
             return await GetAllUsers(req);
         });
+
+        this.on('CreateUser', async (req) => {
+            return await CreateUser(req);
+        });
+        
+        this.on('UpdateUserByUSERID', async (req) => {
+            return await UpdateUserByUSERID(req);
+        });
+        
         //borrado logico
         this.on('DeleteUserLogical', async (req) => {
             return await DeleteUserLogical(req);
@@ -54,22 +82,47 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
             return await GetAllViews(req);
         });
 
+        this.on('CreateView', async (req) => {
+            return await CreateViewService(req);
+          });
+          
         this.on('UpdateViewByCompanyId', async (req) => {
             return await UpdateViewByCompanyId(req);
+        });
+        //Delete de views por id
+        this.on('DeleteViewByCompanyId', async req => {
+        return await DeleteViewByCompanyId(req);
         });
 
         //****************** PARA ROLES ***********************/
         this.on('GetAllRoles', async (req) => {
             return await GetAllRoles(req);
         });
+        
+        this.on('CreateRole', async (req) => {
+            return await CreateRoleService(req);
+          });
 
+        this.on('UpdateRolByRoleID', async (req) => {
+            return await UpdateRolByRoleID(req);
+        });
+
+        //Delete logico de roles
+        this.on('UpdateRoleActivation', async (req) => {
+        return await UpdateRoleActivation(req);
+        });
+
+        //Delete fisico de roles
+        this.on('DeleteRoleById', async (req) => {
+        return await DeleteRoleById(req);
+        });
+        
         //****************** PARA ROLES CON USUARIOS ***********************/
         this.on('GetRoleWithUsers', async (req) => {
             const { roleid } = req.data;
             return await getRoleWithUsers(roleid);
         });
         
-
         return super.init();
     }
 };

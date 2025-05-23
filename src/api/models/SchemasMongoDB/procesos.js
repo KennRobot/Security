@@ -17,4 +17,8 @@ const procesoSchema = new mongoose.Schema({
   timestamps: true // Opcional: createdAt y updatedAt automáticos
 });
 
+procesoSchema.set('toObject', { versionKey: false });
+procesoSchema.set('toJSON', { versionKey: false });
+
+
 module.exports = mongoose.model('process', procesoSchema);

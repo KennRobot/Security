@@ -1,6 +1,16 @@
  //************* SERVICIO PARA MONGO DB */
-const RolesSchema = require('../models/SchemasMongoDB/roles');
+
+ const mongoose = require('mongoose');
+
+
+ const RolesSchema = require('../models/SchemasMongoDB/roles');
 const UserSchema = require('../models/SchemasMongoDB/usuarios');
+const processSchema = require('../models/SchemasMongoDB/procesos');
+const catalogSchema = require('../models/SchemasMongoDB/catalogos');
+const viewsSchema = require('../models/SchemasMongoDB/vistas');
+
+
+
 
 //**************  GET ALLL */
 async function GetAllRoles(req) {
@@ -12,7 +22,7 @@ async function GetAllRoles(req) {
   }
 }
 
-//************** GET USUAIRO */
+//************** GET USUARIO */
 async function getRoleWithUsers(req) {
     if (!req) throw new Error("Missing roleid");
 
@@ -34,7 +44,217 @@ async function getRoleWithUsers(req) {
     };
 }
 
+//*************** CREAR ROL  */
+async function CreateRoleService(req) {
+  try {
+    const data = req.data;
+    const processes = data.PROCESSES;
+    const allRoles = await RolesSchema.find().lean();
+
+    for (const process of processes) {
+      // Buscar por LABELID en lugar de VALUEID
+      const foundProcess = await processSchema.findOne({ LABELID: process.PROCESSID });
+      if (!foundProcess) {
+        return {
+          success: false,
+          message: `El proceso con ID '${process.PROCESSID}' no existe.`
+        };
+      }
+
+      const foundView = await viewsSchema.findOne({ LABELID: process.VIEWID }); // ← Aquí el cambio
+      if (!foundView) {
+        return {
+          success: false,
+          message: `La vista con ID '${process.VIEWID}' no existe.`
+        };
+      }
+
+      for (const privilege of process.PRIVILEGES) {
+        let exists = false;
+
+        for (const role of allRoles) {
+          for (const proc of role.PROCESSES || []) {
+            for (const priv of proc.PRIVILEGES || []) {
+              if (priv.PRIVILEGEID === privilege.PRIVILEGEID) {
+                exists = true;
+                break;
+              }
+            }
+            if (exists) break;
+          }
+          if (exists) break;
+        }
+
+        if (!exists) {
+          return {
+            success: false,
+            message: `El privilegio con ID '${privilege.PRIVILEGEID}' no existe.`
+          };
+        }
+
+        privilege._id = new mongoose.Types.ObjectId();
+      }
+
+      process._id = new mongoose.Types.ObjectId();
+    }
+
+    if (data.DETAIL_ROW?.DETAIL_ROW_REG) {
+      data.DETAIL_ROW.DETAIL_ROW_REG = data.DETAIL_ROW.DETAIL_ROW_REG.map(reg => ({
+        ...reg,
+        REGDATE: new Date(),
+        REGTIME: new Date(),
+        _id: new mongoose.Types.ObjectId()
+      }));
+    }
+
+    const newRole = new RolesSchema(data);
+const saved = await newRole.save();
+return saved.toObject(); // ← esta línea es la que previene el error
+
+
+  } catch (error) {
+    console.error('Error al crear el rol:', error);
+    return {
+      success: false,
+      message: 'Error interno del servidor.'
+    };
+  }
+}
+
+
+
+async function UpdateRolByRoleID(req) {
+  try {
+    const { ROLEID, PROCESSES = [], ...rest } = req.data;
+
+    // Buscar el rol actual
+    const rol = await RolesSchema.findOne({ ROLEID });
+    if (!rol) {
+      return { success: false, message: 'No se encontró un documento con ese ROLEID.' };
+    }
+
+    // Actualizar campos generales si vienen en la petición
+    const camposGenerales = {};
+    for (const key in rest) {
+      if (rest[key] !== undefined) {
+        camposGenerales[key] = rest[key];
+      }
+    }
+
+    if (Object.keys(camposGenerales).length > 0) {
+      await RolesSchema.updateOne({ ROLEID }, { $set: camposGenerales });
+    }
+
+    // Clonamos la lista actual de procesos
+    const procesosActuales = rol.PROCESSES || [];
+
+    for (const nuevoProceso of PROCESSES) {
+      // Validar existencia del proceso
+      const procesoValido = await processSchema.findOne({ LABELID: nuevoProceso.PROCESSID });
+      if (!procesoValido) {
+        return { success: false, message: `Proceso ${nuevoProceso.PROCESSID} no encontrado.` };
+      }
+
+      const indexProceso = procesosActuales.findIndex(p => p.PROCESSID === nuevoProceso.PROCESSID);
+
+      if (indexProceso === -1) {
+        // Proceso nuevo, agregar completo
+        procesosActuales.push(nuevoProceso);
+      } else {
+        // Proceso existente, actualizar campos básicos
+        const procesoExistente = procesosActuales[indexProceso];
+        const procesoActualizado = {
+          ...procesoExistente,
+          ...nuevoProceso
+        };
+
+        // Si vienen privilegios en el JSON, actualizar/agregar los correspondientes
+        if (Array.isArray(nuevoProceso.PRIVILEGES)) {
+          const privilegiosActuales = procesoExistente.PRIVILEGES || [];
+
+          for (const nuevoPrivilegio of nuevoProceso.PRIVILEGES) {
+            const indexPrivilegio = privilegiosActuales.findIndex(
+              p => p.PRIVILEGEID === nuevoPrivilegio.PRIVILEGEID
+            );
+
+            if (indexPrivilegio === -1) {
+              privilegiosActuales.push(nuevoPrivilegio);
+            } else {
+              privilegiosActuales[indexPrivilegio] = {
+                ...privilegiosActuales[indexPrivilegio],
+                ...nuevoPrivilegio
+              };
+            }
+          }
+
+          procesoActualizado.PRIVILEGES = privilegiosActuales;
+        }
+
+        procesosActuales[indexProceso] = procesoActualizado;
+      }
+    }
+
+    // Guardar los cambios
+    const updatedDoc = await RolesSchema.findOneAndUpdate(
+      { ROLEID },
+      { $set: { PROCESSES: procesosActuales } },
+      { new: true }
+    );
+
+    return { success: true, data: updatedDoc };
+  } catch (error) {
+    console.error('Error en UpdateRolByRoleID:', error);
+    return { success: false, message: 'Error al actualizar el documento.', error };
+  }
+}
+
+
+
+//Delete Logico de roles 
+async function UpdateRoleActivation(req) {
+  const { roleid, activated, reguser } = req.data;
+  //validaciones
+  const result = await RolesSchema.findOneAndUpdate(
+    { ROLEID: roleid },
+    {
+      $set: {
+        'DETAIL_ROW.ACTIVED': activated,
+        'DETAIL_ROW.DELETED': !activated
+      },
+      $push: {
+        'DETAIL_ROW.DETAIL_ROW_REG': {
+          CURRENT: activated,
+          REGDATE: new Date(),
+          REGTIME: new Date(),
+          REGUSER: reguser
+        }
+      }
+    },
+    { new: true }
+  ).lean();
+
+  if (!result) throw new Error(`Rol ${roleid} no encontrado`);
+  return result;               
+}
+
+//Delete fisico de roles
+async function DeleteRoleById(req) {
+  const { roleid } = req.data;
+  if (!roleid) {
+    throw new Error("Se requiere 'roleid'");
+  }
+  const result = await RolesSchema.findOneAndDelete({ ROLEID: roleid }).lean();
+  if (!result) {
+    throw new Error(`Rol con ROLEID=${roleid} no encontrado`);
+  }
+  return result;
+}
+
 module.exports = {
   GetAllRoles,
   getRoleWithUsers,
+  CreateRoleService,
+  UpdateRolByRoleID,
+  UpdateRoleActivation,
+  DeleteRoleById
 };

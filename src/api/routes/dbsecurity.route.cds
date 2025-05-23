@@ -25,14 +25,57 @@ service inversionsRoute @(path: '/api/inv') {
     @Core.Description: 'get-catalogs-by-valueid'
     @path            : 'GetCatalogsByValueId'
     function GetCatalogsByValueId(ValueId: String) returns array of catalogs;
+
+    @Core.Description: 'get-one-catalogs-by-valueid'
+    @path            : 'GetCatalogOne'
+    function GetCatalogOne(ValueId: String) returns array of catalogs;
+    
+    @Core.Description: 'Actualizar catálogo por VALUEID'
+    @path: 'UpdateCatalogByValueId'
+    action UpdateCatalogByValueId(
+    VALUEID: String,
+    LABEL: String,
+    INDEX: String,
+    COLLECTION: String,
+    SECTION: String,
+    SEQUENCE: Integer,
+    IMAGE: String,
+    DESCRIPTION: String,
+    REGUSER: String
+    ) returns {
+    success: Boolean;
+    message: String;
+    };
+
     //******************* PROCESS ***********************************
     @Core.Description: 'get-all-process'
     @path            : 'GetAllProcess'
     function GetAllProcess()   returns array of process;
 
-    @Core.Description: 'update-process-by-company-id'
-    @path: 'UpdateProcesByCompanyId'
-    action UpdateProcesByCompanyId(
+
+    @Core.Description: 'crear-nuevo-proceso'
+    @path            : 'CreateProcess'
+    action CreateProcess(
+    COMPANYID: Integer,
+    CEDIID: Integer,
+    LABELID: String,
+    VALUEPAID: String,
+    VALUEID: String,
+    VALUE: String,
+    ALIAS: String,
+    SEQUENCE: Integer,
+    IMAGE: String,
+    VALUESAPID: String,
+    DESCRIPTION: String
+) returns {
+    success: Boolean;
+    message: String;
+};
+
+
+    @Core.Description: 'update-process-by-label-id'
+    @path: 'UpdateProcesByLABELId'
+    action UpdateProcesByLABELId(
         COMPANYID: Integer,
         CEDIID: Integer,
         LABELID: String,
@@ -54,6 +97,40 @@ service inversionsRoute @(path: '/api/inv') {
     @Core.Description: 'get-all-users'
     @path            : 'GetAllUsers'
     function GetAllUsers()   returns array of users;
+    
+    @Core.Description: 'crear-usuario-nuevo'
+    @path            : 'CreateUser'
+    action CreateUser(user: users) returns Boolean;
+
+    @Core.Description: 'actualizar-usuario'
+    @path            : 'UpdateUserByUSERID'
+    action UpdateUserByUSERID(
+        USERID:     String,
+        PASSWORD:   String,
+        USERNAME:   String,
+        ALIAS:      String,
+        FIRSTNAME:  String,
+        LASTNAME:   String,
+        BIRTHDAYDATE: String,
+        COMPANYID:  Integer,
+        COMPANYNAME: String,
+        COMPANYALIAS: String,
+        CEDIID:     String,
+        EMPLOYEEID: String,
+        EMAIL:      String,
+        PHONENUMBER: String,
+        EXTENSION:  String,
+        DEPARTMENT: String,
+        FUNCTION:   String,
+        STREET:     String,
+        POSTALCODE: Integer,
+        CITY:       String,
+        REGION:     String,
+        STATE:      String,
+        COUNTRY:    String,
+        AVATAR:     String,
+        ROLES: array of RolesInput
+    ) returns Boolean;
 
     @Core.Description: 'logical-delete-user'
     @path: 'DeleteUserLogical'
@@ -68,6 +145,28 @@ service inversionsRoute @(path: '/api/inv') {
     @Core.Description: 'get-all-views'
     @path            : 'GetAllViews'
     function GetAllViews()   returns array of views;
+
+
+    @Core.Description: 'crear-nueva-vista'
+    @path            : 'CreateView'
+    action CreateView(
+        COMPANYID: Integer,
+        CEDIID: Integer,
+        LABELID: String,
+        VALUEPAID: String,
+        VALUEID: String,
+        VALUE: String,
+        ALIAS: String,
+        SEQUENCE: Integer,
+        IMAGE: String,
+        VALUESAPID: String,
+        DESCRIPTION: String,
+        ROUTE: String
+    ) returns {
+        success: Boolean;
+        message: String;
+    };
+
 
     @Core.Description: 'update-view-by-company-id'
     @path: 'UpdateViewByCompanyId'
@@ -86,6 +185,12 @@ service inversionsRoute @(path: '/api/inv') {
         ROUTE: String
     ) returns Boolean;
 
+    //Delete de views por id
+    @Core.Description: 'delete-view-by-companyid'
+    @path: 'DeleteViewByCompanyId'
+    action DeleteViewByCompanyId(
+    COMPANYID : Integer    // El COMPANYID de la vista a eliminar
+    ) returns views;
 
     //******************* ROLES ***********************************
     @Core.Description: 'get-all-Roles'
@@ -96,5 +201,87 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'GetRoleWithUsers'
     function getRoleWithUsersHandler(roleid: String) returns roles;
 
-    
+@Core.Description: 'crear-rol-con-validacion'
+@path: 'CreateRole'
+action CreateRole(
+  ROLEID: String,
+  ROLENAME: String,
+  DESCRIPTION: String,
+  PROCESSES: array of {
+    PROCESSID: String;
+    PROCESSNAME: String;
+    APPLICATIONID: String;
+    APPLICATIONNAME: String;
+    VIEWID: String;
+    VIEWNAME: String;
+    PRIVILEGES: array of {
+      PRIVILEGEID: String;
+      PRIVILEGENAME: String;
+    };
+  },
+  DETAIL_ROW: {
+    ACTIVED: Boolean;
+    DELETED: Boolean;
+    DETAIL_ROW_REG: array of {
+      CURRENT: Boolean;
+      REGDATE: DateTime;
+      REGTIME: DateTime;
+      REGUSER: String;
+    };
+  }
+) returns {
+  success: Boolean;
+  message: String;
+};
+
+
+
+    @Core.Description: 'put-role-with-users-by-roleid'
+    @path            : 'UpdateRolByRoleID'
+    action UpdateRolByRoleID(
+        ROLEID: String,
+        ROLENAME: String,
+        DESCRIPTION: String,
+        PROCESSES: array of ProcessInput
+        ) returns Boolean;
+
+    //Delete logico rol
+    @Core.Description: 'update-role-activation'
+    @path: 'UpdateRoleActivation'
+    action UpdateRoleActivation(
+        roleid    : String, 
+        activated : Boolean
+    ) returns roles;
+    //Delete fisico rol
+    @Core.Description: 'delete-role-by-id'
+    @path: 'DeleteRoleById'
+    action DeleteRoleById(
+        roleid : String
+    ) returns roles; 
+
+
+
+}
+
+type RolesInput:{
+    ROLEID: String;
+    ROLENAME: String;
+    DESCRIPTION: String;
+    ROLEIDSAP: String;
+    PROCESSES: array of ProcessInput;
+}
+
+type ProcessInput: {
+  PROCESSID: String;
+  PROCESSNAME: String;
+  VIEWID: String ;
+  VIEWNAME: String;
+  APPLICATIONID: String; 
+  APPLICATIONNAME: String; 
+  PRIVILEGES: array of Privilegios;
+}
+
+type Privilegios:{
+    PRIVILEGEID: String;
+    PRIVILEGENAME: String;
 }

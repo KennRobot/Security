@@ -1,19 +1,58 @@
 //************* SERVICIO PARA MONGO DB */
 const processSchema = require('../models/SchemasMongoDB/procesos');
 
+
+async function GetAllProcess() {
 // Obtener todos los procesos
 async function GetAllProcess(req) {
   try {
-    let process = await processSchema.find().lean(); 
-    return process;
+    const allProcesses = await processSchema.find({});
+    const cleanedProcesses = allProcesses.map(proc => {
+      const { __v, ...cleaned } = proc.toObject();
+      return cleaned;
+    });
+
+    return cleanedProcesses;
   } catch (error) {
-    return error;
+    console.error('Error al obtener todos los procesos:', error);
+    return [];
   }
 }
 
+
+async function CreateProcessService(req) {
+  try {
+    const data = req.data;
+
+    if (!data.updatedAt) {
+      data.updatedAt = new Date();
+    }
+
+    const newProcess = new processSchema(data);
+    await newProcess.save();
+
+    return {
+      success: true,
+    message: 'Proceso creado exitosamente'
+    };
+  } catch (error) {
+    console.error('Error al crear el proceso:', error);
+    return {
+      success: false,
+      message: 'Error al crear el proceso'
+    };
+  }
+}
+
+
+
+async function UpdateProcesByLABELId(req) {
 // Actualizar un proceso por COMPANYID
 async function UpdateProcesByCompanyId(req) {
   try {
+    const { LABELID, ...rest } = req.data;
+
+    // Filtramos solo los campos que realmente se enviaron (no undefined)
     const { COMPANYID, ...rest } = req.data;
     const updateData = {};
     for (const key in rest) {
@@ -23,13 +62,13 @@ async function UpdateProcesByCompanyId(req) {
     }
 
     const updatedDoc = await processSchema.findOneAndUpdate(
-      { COMPANYID: COMPANYID },
+      { LABELID },
       { $set: updateData },
       { new: true }
     );
 
     if (!updatedDoc) {
-      return { success: false, message: 'No se encontró un documento con ese COMPANYID.' };
+      return { success: false, message: 'No se encontró un documento con ese LABELID.' };
     }
 
     return { success: true, data: updatedDoc };
@@ -57,6 +96,8 @@ async function DeleteProcessById(req) {
 
 module.exports = {
   GetAllProcess,
+  CreateProcessService,
+  UpdateProcesByLABELId
   UpdateProcesByCompanyId,
   DeleteProcessById
 };
