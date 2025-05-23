@@ -2,7 +2,7 @@
 const processSchema = require('../models/SchemasMongoDB/procesos');
 
 
-async function GetAllProcess() {
+
 // Obtener todos los procesos
 async function GetAllProcess(req) {
   try {
@@ -18,7 +18,6 @@ async function GetAllProcess(req) {
     return [];
   }
 }
-
 
 async function CreateProcessService(req) {
   try {
@@ -43,15 +42,38 @@ async function CreateProcessService(req) {
     };
   }
 }
-
-
-
+// Actualizar un proceso por LABELID
 async function UpdateProcesByLABELId(req) {
-// Actualizar un proceso por COMPANYID
-async function UpdateProcesByCompanyId(req) {
   try {
     const { LABELID, ...rest } = req.data;
 
+    // Filtramos solo los campos que realmente se enviaron (no undefined)
+    const updateData = {};
+    for (const key in rest) {
+      if (rest[key] !== undefined) {
+        updateData[key] = rest[key];
+      }
+    }
+
+    const updatedDoc = await processSchema.findOneAndUpdate(
+      { LABELID },
+      { $set: updateData },
+      { new: true }
+    );
+
+    if (!updatedDoc) {
+      return { success: false, message: 'No se encontró un documento con ese LABELID.' };
+    }
+
+    return { success: true, data: updatedDoc };
+  } catch (error) {
+    return { success: false, message: 'Error al actualizar el documento.', error };
+  }
+}
+
+// Actualizar un proceso por COMPANYID
+async function UpdateProcesByCompanyId(req) {
+  try {
     // Filtramos solo los campos que realmente se enviaron (no undefined)
     const { COMPANYID, ...rest } = req.data;
     const updateData = {};
@@ -94,10 +116,11 @@ async function DeleteProcessById(req) {
   }
 }
 
+
 module.exports = {
   GetAllProcess,
   CreateProcessService,
-  UpdateProcesByLABELId
+  UpdateProcesByLABELId,
   UpdateProcesByCompanyId,
   DeleteProcessById
 };

@@ -6,13 +6,6 @@ const { GetAllViews, UpdateViewByCompanyId, CreateViewService, DeleteViewByCompa
 const { GetAllRoles, getRoleWithUsers,CreateRoleService, UpdateRolByRoleID, UpdateRoleActivation, DeleteRoleById } = require('../services/roles.services');
 
 
-const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCatalogsByValueId } = require('../services/catalogs.services');
-const { GetAllProcess, UpdateProcesByCompanyId } = require('../services/process.services');
-const { GetAllUsers, DeleteUserLogical, DeleteUserPhysical } = require('../services/users.services');
-const { GetAllViews, UpdateViewByCompanyId } = require('../services/views.services');
-const { GetAllRoles, getRoleWithUsers } = require('../services/roles.services');
-
-
 module.exports = class dbsecurityClass extends cds.ApplicationService {
     async init() {
         //****************** PARA CATALOGS ***********************/
