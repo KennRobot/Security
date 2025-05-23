@@ -211,7 +211,7 @@ async function UpdateRolByRoleID(req) {
 
 
 //Delete Logico de roles 
-async function UpdateRoleActivation(req) {
+async function DeleteRoleLogical(req) {
   const { roleid, activated, reguser } = req.data;
   //validaciones
   const result = await RolesSchema.findOneAndUpdate(
@@ -255,6 +255,6 @@ module.exports = {
   getRoleWithUsers,
   CreateRoleService,
   UpdateRolByRoleID,
-  UpdateRoleActivation,
+  DeleteRoleLogical,
   DeleteRoleById
 };

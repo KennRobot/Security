@@ -246,9 +246,9 @@ action CreateRole(
         ) returns Boolean;
 
     //Delete logico rol
-    @Core.Description: 'update-role-activation'
-    @path: 'UpdateRoleActivation'
-    action UpdateRoleActivation(
+    @Core.Description: 'delete-role-logical'
+    @path: 'DeleteRoleLogical'
+    action DeleteRoleLogical(
         roleid    : String, 
         activated : Boolean
     ) returns roles;

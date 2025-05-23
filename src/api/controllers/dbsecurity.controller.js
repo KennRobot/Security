@@ -3,7 +3,7 @@ const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCata
 const { GetAllProcess, UpdateProcesByLABELId, CreateProcessService } = require('../services/process.services');
 const { GetAllUsers, UpdateUserByUSERID, CreateUser } = require('../services/users.services');
 const { GetAllViews, UpdateViewByCompanyId, CreateViewService, DeleteViewByCompanyId } = require('../services/views.services');
-const { GetAllRoles, getRoleWithUsers,CreateRoleService, UpdateRolByRoleID, UpdateRoleActivation, DeleteRoleById } = require('../services/roles.services');
+const { GetAllRoles, getRoleWithUsers,CreateRoleService, UpdateRolByRoleID, DeleteRoleLogical, DeleteRoleById } = require('../services/roles.services');
 
 
 module.exports = class dbsecurityClass extends cds.ApplicationService {
@@ -101,8 +101,8 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
         });
 
         //Delete logico de roles
-        this.on('UpdateRoleActivation', async (req) => {
-        return await UpdateRoleActivation(req);
+        this.on('DeleteRoleLogical', async (req) => {
+        return await DeleteRoleLogical(req);
         });
 
         //Delete fisico de roles
