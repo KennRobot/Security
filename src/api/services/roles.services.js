@@ -48,11 +48,20 @@ async function getRoleWithUsers(req) {
 async function CreateRoleService(req) {
   try {
     const data = req.data;
+
+    // ✅ Validación para prevenir duplicados por ROLEID
+    const existingRole = await RolesSchema.findOne({ ROLEID: data.ROLEID }).lean();
+    if (existingRole) {
+      return {
+        success: false,
+        message: `Ya existe un rol con el ID '${data.ROLEID}'.`
+      };
+    }
+
     const processes = data.PROCESSES;
     const allRoles = await RolesSchema.find().lean();
 
     for (const process of processes) {
-      // Buscar por LABELID en lugar de VALUEID
       const foundProcess = await processSchema.findOne({ LABELID: process.PROCESSID });
       if (!foundProcess) {
         return {
@@ -61,7 +70,7 @@ async function CreateRoleService(req) {
         };
       }
 
-      const foundView = await viewsSchema.findOne({ LABELID: process.VIEWID }); // ← Aquí el cambio
+      const foundView = await viewsSchema.findOne({ LABELID: process.VIEWID });
       if (!foundView) {
         return {
           success: false,
@@ -108,9 +117,8 @@ async function CreateRoleService(req) {
     }
 
     const newRole = new RolesSchema(data);
-const saved = await newRole.save();
-return saved.toObject(); // ← esta línea es la que previene el error
-
+    const saved = await newRole.save();
+    return saved.toObject();
 
   } catch (error) {
     console.error('Error al crear el rol:', error);
@@ -120,6 +128,7 @@ return saved.toObject(); // ← esta línea es la que previene el error
     };
   }
 }
+
 
 
 

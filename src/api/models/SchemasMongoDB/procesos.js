@@ -14,7 +14,8 @@ const procesoSchema = new mongoose.Schema({
   DESCRIPTION: { type: String }
 }, {
   collection: 'process',
-  timestamps: true // Opcional: createdAt y updatedAt automáticos
+  timestamps: true, // Opcional: createdAt y updatedAt automáticos
+  versionKey: false
 });
 
 procesoSchema.set('toObject', { versionKey: false });

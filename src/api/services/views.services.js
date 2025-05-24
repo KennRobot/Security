@@ -21,9 +21,31 @@ async function CreateViewService(req) {
   try {
     const data = req.data;
 
+    // Validación básica de LABELID
+    if (!data.LABELID || typeof data.LABELID !== 'string' || !data.LABELID.trim()) {
+      return {
+        success: false,
+        message: 'El campo LABELID es obligatorio y debe ser una cadena válida.'
+      };
+    }
+
+    // Convertimos LABELID a mayúsculas para estandarizar 
+    //  data.LABELID = data.LABELID.trim().toUpperCase();
+
+    // Validar duplicado por LABELID
+    const existingView = await viewsSchema.findOne({ LABELID: data.LABELID });
+    if (existingView) {
+      return {
+        success: false,
+        message: `Ya existe una vista con el LABELID '${data.LABELID}'.`
+      };
+    }
+
+    // Establecer timestamps si no vienen
     if (!data.updatedAt) data.updatedAt = new Date();
     if (!data.createdAt) data.createdAt = new Date();
 
+    // Crear y guardar vista
     const newView = new viewsSchema(data);
     const saved = await newView.save();
 
@@ -37,13 +59,15 @@ async function CreateViewService(req) {
     };
 
   } catch (error) {
-    console.error('Error al crear la vista:', error);
+    console.error('Error al crear la vista:', error.message);
     return {
       success: false,
-      message: 'Error al crear la vista'
+      message: 'Error al crear la vista',
+      error: error.message
     };
   }
 }
+
 
 
 async function UpdateViewByCompanyId(req) {

@@ -23,6 +23,15 @@ async function CreateProcessService(req) {
   try {
     const data = req.data;
 
+    // Validar que no exista un proceso con el mismo LABELID
+    const existing = await processSchema.findOne({ LABELID: data.LABELID }).lean();
+    if (existing) {
+      return {
+        success: false,
+        message: `Ya existe un proceso con el LABELID '${data.LABELID}'.`
+      };
+    }
+
     if (!data.updatedAt) {
       data.updatedAt = new Date();
     }
@@ -32,44 +41,17 @@ async function CreateProcessService(req) {
 
     return {
       success: true,
-    message: 'Proceso creado exitosamente'
+      message: 'Proceso creado exitosamente'
     };
   } catch (error) {
-    console.error('Error al crear el proceso:', error);
+    console.error('Error al crear el proceso:', error.message);
     return {
       success: false,
       message: 'Error al crear el proceso'
     };
   }
 }
-// Actualizar un proceso por LABELID
-async function UpdateProcesByLABELId(req) {
-  try {
-    const { LABELID, ...rest } = req.data;
 
-    // Filtramos solo los campos que realmente se enviaron (no undefined)
-    const updateData = {};
-    for (const key in rest) {
-      if (rest[key] !== undefined) {
-        updateData[key] = rest[key];
-      }
-    }
-
-    const updatedDoc = await processSchema.findOneAndUpdate(
-      { LABELID },
-      { $set: updateData },
-      { new: true }
-    );
-
-    if (!updatedDoc) {
-      return { success: false, message: 'No se encontró un documento con ese LABELID.' };
-    }
-
-    return { success: true, data: updatedDoc };
-  } catch (error) {
-    return { success: false, message: 'Error al actualizar el documento.', error };
-  }
-}
 
 // Actualizar un proceso por COMPANYID
 async function UpdateProcesByCompanyId(req) {
@@ -120,7 +102,6 @@ async function DeleteProcessById(req) {
 module.exports = {
   GetAllProcess,
   CreateProcessService,
-  UpdateProcesByLABELId,
   UpdateProcesByCompanyId,
   DeleteProcessById
 };
