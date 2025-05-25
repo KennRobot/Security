@@ -20,8 +20,8 @@ Endpoint | Route | Description | Finish | Creator | Body
 `GET` | /api/inv/users?userid=FIBARRAC | un solo usuario | yes| Adolfo| none
 `POST` | /api/inv/CreateUser | crear nuevo usuario | Yes | Aaron|{"user":{"USERID":"RLuna","PASSWORD":"1234","USERNAME":"Roberto Luna","ALIAS":"Robert","FIRSTNAME":"Roberto","LASTNAME":"Luna","BIRTHDAYDATE":"01.01.2000","COMPANYID":1001,"COMPANYNAME":"INSTITUTO TECNOLOGICO DE TEPIC","COMPANYALIAS":"ITT","CEDIID":"IdTepic","EMPLOYEEID":"1100","EMAIL":"pmartinez@ittepic.edu.mx","PHONENUMBER":"3232823141","EXTENSION":"","DEPARTMENT":"Sistemas","FUNCTION":"Estudiante","STREET":"Av. universidad 100","POSTALCODE":63000,"CITY":"Tepic","REGION":"","STATE":"Nayarit","COUNTRY":"Mexico","AVATAR":"","ROLES":[{"ROLEID":"IdWarehouseManager"}]}}
 `PUT` | /api/inv/UpdateUserByUSERID | Actualizar usuario (validar que el rol Exista) | YES | Joya| {"USERID": "AJOYA","BIRTHDAYDATE": "21.03.2001","ROLES" : [{"ROLEID":"IdWarehouseManager","ROLEIDSAP":"update-prueba","PROCESSES":[{"PROCESSID":"IdProcesses","PROCESSNAME":"proceso-update","PRIVILEGES":[{"PRIVILEGEID":"IdRead","PRIVILEGENAME":"Read"}]}]}]}
-`PATCH` | /api/inv/deleteusers?userid=CHALMUNOZOR | Borrado lógico (Usuario Inactivo) | No | Pedro y Jesus| none
-`DELETE` | /api/inv/deleteusers?userid=CHALMUNOZOR| Eliminado físico (Usuario Eliminado) | No | Pedro y Jesus| none
+`POST` | api/inv/DeleteUserLogical | Borrado lógico (Usuario Inactivo) | YES | Pedro y Jesus| {"USERID": "PMARTINEZ","ACTIVED": false}
+`POST` | api/inv/DeleteUserPhysical| Eliminado físico (Usuario Eliminado) | YES | Pedro y Jesus| {"USERID": "Prueba83"}
 
 # EndPoints para Roles
 
@@ -50,6 +50,6 @@ Endpoint | Route | Description | Finish| Creator | Body
 `POST` | /api/inv/CreateProcess | Nuevo proceso | yes | Aaron| {"COMPANYID":0,"CEDIID":0,"LABELID":"IdProcesses","VALUEPAID":"IdViews-IdUserManagementView","VALUEID":"IdAllPrivilegesMonitoring","VALUE":"Monitoreo de Todos los Privilegios","ALIAS":"ALL_PRIV","SEQUENCE":30,"IMAGE":"https://security_auth.png","VALUESAPID":"Ejemplo Update10","DESCRIPTION":"Proceso de monitoreo de todos los privilegios de usuarios en el sistema."}
 `PUT` | /api/inv/UpdateProcesByLABELId | Actualizar | Yes | Joya| {"COMPANYID": 5,"CEDIID": 1,"LABELID":"IdProcesses","VALUEPAID": "IdViews-IdUserManagementView","VALUEID": "IdAllPrivilegesMonitoring","VALUE": "Monitoreo de Todos los Privilegios","ALIAS": "ALL_PRIV","SEQUENCE": 1,"IMAGE": "https://security_auth.png","VALUESAPID": "Change","DESCRIPTION": "Proceso de monitoreo de todos los privilegios de usuarios en el sistema."}
 `PATCH` |   /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
-`DELETE` |  /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Eliminado físico (Rol Eliminado) |No | Pedro y Jesus| none
+`DELETE` |  /api/security/DeleteProcessById| Eliminado físico (Rol Eliminado) |YES | Pedro y Jesus| none
 
 
