@@ -9,7 +9,8 @@ Endpoint | Route | Description | Finish | Creator | Body
 `PUT` | /api/security/catalogs?ValueId=IdSecurity | actualizar catalogo | Yes | aaron |{"VALUEID":"IdInvestments","LABEL":"IdApplicationsUpdated","INDEX":"INV-2025-NEW","COLLECTION":"modulos","SECTION":"recomendaciones","SEQUENCE":22,"IMAGE":"https://investmentrecommendation.com/nueva.png","DESCRIPTION":"Catálogo actualizado para recomendaciones de inversiones del 2025.","REGUSER":"FIBARRAC"}
 
 
-`DELETE` | /api/security/catalogs?ValueId=IdSecurity | alimnar catalogo | yes | joya| none
+`DELETE` | /api/inv/CatalogosDeleteById | Eliminado fisico catalogo | yes | joya| {"ValueId": "IdInvestments"}
+`DELETE` | /api/inv/DeleteCatalogoLogical | Eliminado Logico catalogo   | yes | joya | /api/inv/DeleteCatalogoLogical
 
 # EndPoints para Usuarios
 
