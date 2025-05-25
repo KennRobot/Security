@@ -53,11 +53,12 @@ async function CreateProcessService(req) {
 }
 
 
-// Actualizar un proceso por COMPANYID
-async function UpdateProcesByCompanyId(req) {
+// Actualizar un proceso por LABELID
+async function UpdateProcesByLABELId(req) {
   try {
+    const { LABELID, ...rest } = req.data;
+
     // Filtramos solo los campos que realmente se enviaron (no undefined)
-    const { COMPANYID, ...rest } = req.data;
     const updateData = {};
     for (const key in rest) {
       if (rest[key] !== undefined) {
@@ -102,6 +103,6 @@ async function DeleteProcessById(req) {
 module.exports = {
   GetAllProcess,
   CreateProcessService,
-  UpdateProcesByCompanyId,
+  UpdateProcesByLABELId,
   DeleteProcessById
 };
