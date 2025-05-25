@@ -10,7 +10,7 @@ Endpoint | Route | Description | Finish | Creator | Body
 
 
 `DELETE` | /api/inv/CatalogosDeleteById | Eliminado fisico catalogo | yes | joya| {"ValueId": "IdInvestments"}
-`DELETE` | /api/inv/DeleteCatalogoLogical | Eliminado Logico catalogo   | yes | joya | {"ValueId": "IdInvestments"}
+`DELETE` | /api/inv/DeleteCatalogoLogical | Eliminado Logico catalogo   | yes | joya | {"ValueId": "IdInversions","activated": false}
 
 # EndPoints para Usuarios
 
