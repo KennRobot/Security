@@ -51,7 +51,7 @@ async function CatalogosDeleteById(req) {
       };
     }
 
-    return true; // Para CAP, si se espera un booleano
+    return deleted; 
   } catch (error) {
     console.error('Error en CatalogosDeleteById:', error);
     return {
@@ -59,6 +59,33 @@ async function CatalogosDeleteById(req) {
       message: `Error al eliminar el catálogo: ${error.message}`
     };
   }
+}
+
+//Delete Logico de Catalogos
+async function DeleteCatalogoLogical(req) {
+  const { ValueId, activated, reguser } = req.data;
+  //validaciones
+  const result = await catalogsSchema.findOneAndUpdate(
+    { VALUEID: ValueId }, 
+    {
+      $set: {
+        'DETAIL_ROW.ACTIVED': activated,
+        'DETAIL_ROW.DELETED': !activated
+      },
+      $push: {
+        'DETAIL_ROW.DETAIL_ROW_REG': {
+          CURRENT: activated,
+          REGDATE: new Date(),
+          REGTIME: new Date(),
+          REGUSER: reguser
+        }
+      }
+    },
+    { new: true }
+  ).lean();
+
+  if (!result) throw new Error(`Catalogo ${ValueId} no encontrado`);
+  return result;               
 }
 
 async function GetCatalogsByApplicationId(req) {
@@ -161,5 +188,6 @@ module.exports = {
   GetCatalogsByValueId, 
   GetCatalogOne,
   GetCatalogsByValueId,
-  UpdateCatalogByValueId
+  UpdateCatalogByValueId,
+  DeleteCatalogoLogical
 };

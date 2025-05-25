@@ -18,6 +18,13 @@ service inversionsRoute @(path: '/api/inv') {
     @path            : 'CatalogosDeleteById'
     action CatalogosDeleteById(ValueId : String)   returns Boolean ;
 
+    @Core.Description: 'deletedLogical-by-ValueId-catalogs'
+    @path            : 'DeleteCatalogoLogical'
+    action DeleteCatalogoLogical(
+        ValueId    : String, 
+        activated : Boolean
+    ) returns Boolean ;
+
     @Core.Description: 'get-catalogs-by-application-id'
     @path            : 'GetCatalogsByApplicationId'
     function GetCatalogsByApplicationId(IdApplication: String) returns array of catalogs;
