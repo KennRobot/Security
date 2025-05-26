@@ -1,5 +1,6 @@
 //************* SERVICIO PARA MONGO DB */
 const processSchema = require('../models/SchemasMongoDB/procesos');
+const procesoSchema = require('../models/SchemasMongoDB/procesos');
 
 
 
@@ -82,27 +83,36 @@ async function UpdateProcesByLABELId(req) {
   }
 }
 
-// Borrado físico de un proceso por ID
-async function DeleteProcessById(req) {
+// Borrado físico de un proceso por LABELID
+async function DeleteProcessByLABELId(req) {
   try {
-    const { ID } = req.data;
+    const { LABELID } = req.data;
 
-    const deletedDoc = await procesoSchema.findByIdAndDelete(ID);
+    const deletedDoc = await procesoSchema.findOneAndDelete({ LABELID }); 
 
     if (!deletedDoc) {
-      return { success: false, message: 'No se encontró un proceso con ese ID.' };
+      return { success: false, message: 'No se encontró un proceso con ese LABELID.' };
     }
 
-    return { success: true, message: 'Proceso eliminado correctamente.', data: deletedDoc };
+    return {
+      success: true,
+      message: 'Proceso eliminado correctamente.',
+      data: deletedDoc
+    };
   } catch (error) {
-    return { success: false, message: 'Error al eliminar el proceso.', error };
+    return {
+      success: false,
+      message: 'Error al eliminar el proceso.',
+      error: error.message || error
+    };
   }
 }
+
 
 
 module.exports = {
   GetAllProcess,
   CreateProcessService,
   UpdateProcesByLABELId,
-  DeleteProcessById
+  DeleteProcessByLABELId
 };

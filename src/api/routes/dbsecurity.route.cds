@@ -96,9 +96,9 @@ service inversionsRoute @(path: '/api/inv') {
         DESCRIPTION: String
     ) returns Boolean;
 
-    @Core.Description: 'Delete-Process-By-Id'
-    @path: 'DeleteProcessById'
-    action DeleteProcessById( PROCESSID: String) returns Boolean;  
+    @Core.Description: 'Delete-Process-By-LABEL-Id'
+    @path: 'DeleteProcessByLABELId'
+    action DeleteProcessByLABELId( LABELID: String) returns Boolean;  
 
     //******************* USERS ***********************************
     @Core.Description: 'get-all-users'

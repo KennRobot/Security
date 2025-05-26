@@ -1,6 +1,6 @@
 const cds = require('@sap/cds');
 const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCatalogsByValueId, GetCatalogOne,UpdateCatalogByValueId, DeleteCatalogoLogical } = require('../services/catalogs.services');
-const { GetAllProcess, UpdateProcesByLABELId, CreateProcessService } = require('../services/process.services');
+const { GetAllProcess, UpdateProcesByLABELId, CreateProcessService, DeleteProcessByLABELId } = require('../services/process.services');
 const { GetAllUsers, UpdateUserByUSERID, CreateUser } = require('../services/users.services');
 const { GetAllViews, UpdateViewByCompanyId, CreateViewService, DeleteViewByCompanyId } = require('../services/views.services');
 const { GetAllRoles, getRoleWithUsers,CreateRoleService, UpdateRolByRoleID, DeleteRoleLogical, DeleteRoleById } = require('../services/roles.services');
@@ -49,8 +49,8 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
             return await UpdateProcesByLABELId(req);
         });
 
-        this.on('DeleteProcessById', async (req) => {
-            return await DeleteProcessById(req);
+        this.on('DeleteProcessByLABELId', async (req) => {
+            return await DeleteProcessByLABELId(req);
         });
 
          //****************** PARA USERS ***********************/
