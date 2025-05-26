@@ -50,6 +50,6 @@ Endpoint | Route | Description | Finish| Creator | Body
 `POST` | /api/inv/CreateProcess | Nuevo proceso | yes | Aaron| {"COMPANYID":0,"CEDIID":0,"LABELID":"IdProcesses","VALUEPAID":"IdViews-IdUserManagementView","VALUEID":"IdAllPrivilegesMonitoring","VALUE":"Monitoreo de Todos los Privilegios","ALIAS":"ALL_PRIV","SEQUENCE":30,"IMAGE":"https://security_auth.png","VALUESAPID":"Ejemplo Update10","DESCRIPTION":"Proceso de monitoreo de todos los privilegios de usuarios en el sistema."}
 `PUT` | /api/inv/UpdateProcesByLABELId | Actualizar | Yes | Joya| {"COMPANYID": 5,"CEDIID": 1,"LABELID":"IdProcesses","VALUEPAID": "IdViews-IdUserManagementView","VALUEID": "IdAllPrivilegesMonitoring","VALUE": "Monitoreo de Todos los Privilegios","ALIAS": "ALL_PRIV","SEQUENCE": 1,"IMAGE": "https://security_auth.png","VALUESAPID": "Change","DESCRIPTION": "Proceso de monitoreo de todos los privilegios de usuarios en el sistema."}
 `PATCH` |   /api/security/deleteprocesses?valueid=IdSecurityAdministrator | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
-`DELETE` |  /api/security/DeleteProcessById| Eliminado físico (Rol Eliminado) |YES | Pedro y Jesus| none
+`POST` |  /api/inv/DeleteProcessByLABELId| Eliminado físico (proceso Eliminado) |YES | Pedro y Jesus| {"LABELID": "idProcessV3"}
 
 
