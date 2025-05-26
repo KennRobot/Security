@@ -12,6 +12,43 @@ async function GetAllUsers(req) {
   }
 }
 
+// Obtener un solo usuario por USERID
+async function getOneUserById(req) {
+  try {
+    const USERID = req.data.USERID || req.params.USERID || req.query.USERID;
+
+    if (!USERID) {
+      return {
+        status: 400,
+        message: 'Se requiere el USERID para buscar el usuario.'
+      };
+    }
+
+    const usuario = await usersSchema.findOne({ USERID }).lean();
+
+    if (!usuario) {
+      return {
+        status: 404,
+        message: `No se encontró usuario con USERID: ${USERID}`
+      };
+    }
+
+    return {
+      status: 200,
+      data: usuario
+    };
+
+  } catch (error) {
+    console.error('Error al obtener usuario por ID:', error);
+    return {
+      status: 500,
+      message: 'Error interno al obtener usuario por ID',
+      error: error.message
+    };
+  }
+}
+
+
 // Crear nuevo usuario con validación de roles
 async function CreateUser(req) {
   try {
@@ -304,6 +341,7 @@ const DeleteUserPhysical = async (req) => {
 
 module.exports = {
   GetAllUsers,
+  getOneUserById,
   CreateUser,
   UpdateUserByUSERID, 
   DeleteUserLogical,

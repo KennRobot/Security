@@ -104,6 +104,10 @@ service inversionsRoute @(path: '/api/inv') {
     @Core.Description: 'get-all-users'
     @path            : 'GetAllUsers'
     function GetAllUsers()   returns array of users;
+
+    @Core.Description: 'get-one-user-by-id'
+    @path            : 'getOneUserById'
+    function getOneUserById(USERID: String)   returns array of users;
     
     @Core.Description: 'crear-usuario-nuevo'
     @path            : 'CreateUser'
