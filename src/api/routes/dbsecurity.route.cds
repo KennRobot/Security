@@ -35,7 +35,7 @@ service inversionsRoute @(path: '/api/inv') {
 
     @Core.Description: 'get-one-catalogs-by-valueid'
     @path            : 'GetCatalogOne'
-    function GetCatalogOne(ValueId: String) returns array of catalogs;
+    function GetCatalogOne(VALUEID: String) returns array of catalogs;
     
     @Core.Description: 'Actualizar catálogo por VALUEID'
     @path: 'UpdateCatalogByValueId'

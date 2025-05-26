@@ -13,7 +13,7 @@ async function GetAllCatalogs(req) {
 
 async function GetCatalogOne(req) {
   try {
-    const { VALUEID } = req.data;  // Asumiendo que el ID es un parámetro en el cuerpo de la solicitud
+    const { VALUEID } = req.data;  
 
     // Buscar el registro en MongoDB
     const catalog = await catalogsSchema.findOne({ VALUEID }).lean();
