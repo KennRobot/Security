@@ -259,13 +259,33 @@ const DeleteUserPhysical = async (req) => {
         message: 'Se requiere el USERID para eliminar el usuario.'
       };
     }
-    const result = await usersSchema.deleteOne({ USERID });
-    if (result.deletedCount === 0) {
+
+    // Verificar si el usuario existe 
+    const usuario = await usersSchema.findOne({ USERID });
+    if (!usuario) {
       return {
         success: false,
         message: `No se encontró el usuario con ID: ${USERID}`
       };
     }
+
+    // Solo permitir borrado físico si ya ha sido borrado lógicamente
+    if (usuario.DETAIL_ROW?.DELETED !== true) {
+      return {
+        success: false,
+        message: `No se puede eliminar físicamente el usuario con ID: ${USERID} porque no ha sido eliminado lógicamente.`
+      };
+    }
+
+    // Si fue eliminado lógicamente, permitir el borrado físico
+    const result = await usersSchema.deleteOne({ USERID });
+    if (result.deletedCount === 0) {
+      return {
+        success: false,
+        message: `No se pudo eliminar el usuario con ID: ${USERID}`
+      };
+    }
+
     return {
       success: true,
       message: `Usuario con ID ${USERID} eliminado físicamente.`,
@@ -280,6 +300,7 @@ const DeleteUserPhysical = async (req) => {
     };
   }
 };
+
 
 module.exports = {
   GetAllUsers,

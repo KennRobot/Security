@@ -1,7 +1,7 @@
 const cds = require('@sap/cds');
 const { GetAllCatalogs, CatalogosDeleteById, GetCatalogsByApplicationId, GetCatalogsByValueId, GetCatalogOne,UpdateCatalogByValueId, DeleteCatalogoLogical } = require('../services/catalogs.services');
 const { GetAllProcess, UpdateProcesByLABELId, CreateProcessService, DeleteProcessByLABELId } = require('../services/process.services');
-const { GetAllUsers, UpdateUserByUSERID, CreateUser } = require('../services/users.services');
+const { GetAllUsers, UpdateUserByUSERID, CreateUser, DeleteUserLogical, DeleteUserPhysical } = require('../services/users.services');
 const { GetAllViews, UpdateViewByCompanyId, CreateViewService, DeleteViewByCompanyId } = require('../services/views.services');
 const { GetAllRoles, getRoleWithUsers,CreateRoleService, UpdateRolByRoleID, DeleteRoleLogical, DeleteRoleById } = require('../services/roles.services');
 
