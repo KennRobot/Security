@@ -16,7 +16,7 @@ Endpoint | Route | Description | Finish | Creator | Body
 
 Endpoint | Route | Description | Finish | Creator | Body
 ---------|----------|----------|----------|---------- | ---------
-`GET` | /api/inv/users | todos los usuarios | Yes | Kennby| none
+`GET` | api/inv/GetAllUsers | todos los usuarios | Yes | Kennby| none
 `GET` | /api/inv/getOneUserById | un solo usuario | yes| Adolfo| { "USERID": "AJOYA" }
 `POST` | /api/inv/CreateUser | crear nuevo usuario | Yes | Aaron|{"user":{"USERID":"RLuna","PASSWORD":"1234","USERNAME":"Roberto Luna","ALIAS":"Robert","FIRSTNAME":"Roberto","LASTNAME":"Luna","BIRTHDAYDATE":"01.01.2000","COMPANYID":1001,"COMPANYNAME":"INSTITUTO TECNOLOGICO DE TEPIC","COMPANYALIAS":"ITT","CEDIID":"IdTepic","EMPLOYEEID":"1100","EMAIL":"pmartinez@ittepic.edu.mx","PHONENUMBER":"3232823141","EXTENSION":"","DEPARTMENT":"Sistemas","FUNCTION":"Estudiante","STREET":"Av. universidad 100","POSTALCODE":63000,"CITY":"Tepic","REGION":"","STATE":"Nayarit","COUNTRY":"Mexico","AVATAR":"","ROLES":[{"ROLEID":"IdWarehouseManager"}]}}
 `PUT` | /api/inv/UpdateUserByUSERID | Actualizar usuario (validar que el rol Exista) | YES | Joya| {"USERID": "AJOYA","BIRTHDAYDATE": "21.03.2001","ROLES" : [{"ROLEID":"IdWarehouseManager","ROLEIDSAP":"update-prueba","PROCESSES":[{"PROCESSID":"IdProcesses","PROCESSNAME":"proceso-update","PRIVILEGES":[{"PRIVILEGEID":"IdRead","PRIVILEGENAME":"Read"}]}]}]}
@@ -40,7 +40,6 @@ Endpoint | Route | Description | Finish| Creator | Body
 ---------|----------|----------|----------|---------- | ----------
 `POST` | /api/inv/CreateView | Nueva vista| No | Aaron| {"COMPANYID":0,"CEDIID":0,"LABELID":"Nuevo Label 40","VALUEPAID":"IdApplications-IdInversions","VALUEID":"IdSalesForecast","VALUE":"Nuevo Valor","ALIAS":"PROVTA","SEQUENCE":10,"IMAGE":"imagen.jpg","VALUESAPID":"","DESCRIPTION":"Pronostico de Ventas","ROUTE":"/nueva/ruta"}
 `PUT` | /api/security/UpdateViewByCompanyId | actualizar | Yes | Joya| {"COMPANYID": 1,"CEDIID": 1,"LABELID":"Nuevo Label","VALUEPAID": "IdViews-IdUserManagementView","VALUEID": "IdAllPrivilegesMonitoring","VALUE": "Monitoreo de Todos los Privilegios","ALIAS": "ALL_PRIV","SEQUENCE": 1,"IMAGE": "https://security_auth.png","VALUESAPID": "Change","DESCRIPTION": "Proceso de monitoreo de todos los privilegios de usuarios en el sistema.","ROUTE":"/nuevaRuta"}
-`PATCH` |   /api/security/deleteview?valueid=IdApplications-IdInversions | Borrado lógico (Rol Inactivo) | No | Pedro y Jesus| none
 `POST` | /api/inv/DeleteViewByCompanyId | Eliminado físico (Rol Eliminado) | Yes | Pedro y Jesus| { "COMPANYID": 10 }
 
 # EndPoints para Procesos
