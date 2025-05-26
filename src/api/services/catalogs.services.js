@@ -89,11 +89,11 @@ async function DeleteCatalogoLogical(req) {
 }
 
 async function GetCatalogsByApplicationId(req) {
-    const { IdApplication } = req.data;
+    const { LABELID } = req.data;
 
-    if (!IdApplication) throw new Error("IdApplication is required");
+    if (!LABELID) throw new Error("LABELID is required");
 
-    const results = await catalogsSchema.find({ IdApplication }).lean();
+    const results = await catalogsSchema.find({ LABELID }).lean();
 
     return results;
 }

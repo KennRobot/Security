@@ -27,7 +27,7 @@ service inversionsRoute @(path: '/api/inv') {
 
     @Core.Description: 'get-catalogs-by-application-id'
     @path            : 'GetCatalogsByApplicationId'
-    function GetCatalogsByApplicationId(IdApplication: String) returns array of catalogs;
+    function GetCatalogsByApplicationId(LABELID: String) returns array of catalogs;
 
     @Core.Description: 'get-catalogs-by-valueid'
     @path            : 'GetCatalogsByValueId'
