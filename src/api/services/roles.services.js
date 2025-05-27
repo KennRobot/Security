@@ -24,6 +24,7 @@ async function GetAllRoles(req) {
 
 //************** GET USUARIO */
 async function getRoleWithUsers(req) {
+  const { roleid } = req.data;   
     if (!req) throw new Error("Missing roleid");
 
     const role = await RolesSchema.findOne({ ROLEID: roleid }).lean();
@@ -217,33 +218,48 @@ async function UpdateRolByRoleID(req) {
   }
 }
 
-
-
-//Delete Logico de roles 
+//                  Delete Logico de roles 
 async function DeleteRoleLogical(req) {
-  const { roleid, activated, reguser } = req.data;
-  //validaciones
-  const result = await RolesSchema.findOneAndUpdate(
+  const { roleid } = req.data;
+  if (!roleid) {
+    throw Object.assign(new Error("Se requiere 'roleid'"), { status: 400 });
+  }
+
+  //Leer el rol actual
+  const current = await RolesSchema.findOne({ ROLEID: roleid });
+  if (!current) {
+    throw Object.assign(new Error(`Rol ${roleid} no encontrado`), { status: 404 });
+  }
+
+  //Invertir valores
+  const newActivated = !current.DETAIL_ROW.ACTIVED;
+  const newDeleted   = !newActivated;
+  const now          = new Date();
+
+  //Actualizar el documento con los nuevos valores y registro de auditoría
+  const updated = await RolesSchema.findOneAndUpdate(
     { ROLEID: roleid },
     {
       $set: {
-        'DETAIL_ROW.ACTIVED': activated,
-        'DETAIL_ROW.DELETED': !activated
+        'DETAIL_ROW.ACTIVED': newActivated,
+        'DETAIL_ROW.DELETED': newDeleted
       },
       $push: {
         'DETAIL_ROW.DETAIL_ROW_REG': {
-          CURRENT: activated,
-          REGDATE: new Date(),
-          REGTIME: new Date(),
-          REGUSER: reguser
+          CURRENT: newActivated,
+          REGDATE: now,
+          REGTIME: now
         }
       }
     },
     { new: true }
-  ).lean();
+  );
+  // Construir mensaje según el nuevo estado
+  const message = newActivated
+    ? 'El rol se encuentra ACTIVO'
+    : 'El rol se encuentra INACTIVO';
 
-  if (!result) throw new Error(`Rol ${roleid} no encontrado`);
-  return result;               
+  return { message };
 }
 
 //Delete fisico de roles

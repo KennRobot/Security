@@ -209,8 +209,8 @@ service inversionsRoute @(path: '/api/inv') {
     function GetAllRoles()   returns array of roles;
 
     @Core.Description: 'get-role-with-users-by-roleid'
-    @path            : 'GetRoleWithUsers'
-    function getRoleWithUsersHandler(roleid: String) returns roles;
+    @path            : 'getRoleWithUsers'
+    function getRoleWithUsers(roleid: String) returns roles;
 
 @Core.Description: 'crear-rol-con-validacion'
 @path: 'CreateRole'
@@ -260,8 +260,7 @@ action CreateRole(
     @Core.Description: 'delete-role-logical'
     @path: 'DeleteRoleLogical'
     action DeleteRoleLogical(
-        roleid    : String, 
-        activated : Boolean
+        roleid    : String
     ) returns roles;
     //Delete fisico rol
     @Core.Description: 'delete-role-by-id'

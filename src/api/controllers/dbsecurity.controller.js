@@ -100,6 +100,10 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
         this.on('GetAllRoles', async (req) => {
             return await GetAllRoles(req);
         });
+
+        this.on('getRoleWithUsers', async (req) => {
+            return await getRoleWithUsers(req);
+        });
         
         this.on('CreateRole', async (req) => {
             return await CreateRoleService(req);
