@@ -50,7 +50,7 @@ async function getOneUserById(req) {
 
 
 // Crear nuevo usuario con validación de roles
-async function CreateUser(req) {
+async function CreateUser(req){
   try {
     const data = req.data.user || req.body.user;
 
@@ -123,7 +123,7 @@ async function UpdateUserByUSERID(req) {
       return { success: false, message: 'No se encontró un usuario con ese USERID.' };
     }
 
-    // 1. Actualizar los campos generales proporcionados (sin borrar lo que no se mande)
+    // 1. Actualizar los campos generales proporcionados
     const datosActualizar = {};
     for (const key in camposRestantes) {
       if (camposRestantes[key] !== undefined) {

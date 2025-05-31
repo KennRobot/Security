@@ -40,7 +40,22 @@ async function CatalogosDeleteById(req) {
         message: 'Debe proporcionar un ValueId válido'
       };
     }
-
+    // Verificar si el catalogo existe 
+    const catalogo = await catalogsSchema.findOne({ ValueId });
+    if (!catalogo) {
+      return {
+        success: false,
+        message: `No se encontró el catalogo con ID: ${ValueId}`
+      };
+    }
+    
+    // Solo permitir borrado físico si ya ha sido borrado lógicamente
+    if (catalogo.DETAIL_ROW?.DELETED !== true) {
+      return {
+        success: false,
+        message: `No se puede eliminar físicamente el catalogo con ID: ${ValueId} porque no ha sido eliminado lógicamente.`
+      };
+    }
     // Buscar y eliminar el documento
     const deleted = await catalogsSchema.findOneAndDelete({ VALUEID: ValueId }).lean();
 
@@ -104,7 +119,7 @@ async function GetCatalogsByValueId(req) {
 
     if (!ValueId) throw new Error("ValueId is required");
 
-    const results = await Catalogo.find({ ValueId }).lean();
+    const results = await catalogsSchema.find({ ValueId }).lean();
 
     return results;
 }

@@ -22,7 +22,7 @@ Endpoint | Route | Description | Finish | Creator | Body
 `PUT` | /api/inv/UpdateUserByUSERID | Actualizar usuario (validar que el rol Exista) | YES | Joya| {"USERID": "AJOYA","BIRTHDAYDATE": "21.03.2001","ROLES" : [{"ROLEID":"IdWarehouseManager","ROLEIDSAP":"update-prueba","PROCESSES":[{"PROCESSID":"IdProcesses","PROCESSNAME":"proceso-update","PRIVILEGES":[{"PRIVILEGEID":"IdRead","PRIVILEGENAME":"Read"}]}]}]}
 `POST` | api/inv/DeleteUserLogical | Borrado lógico (Usuario Inactivo) | YES | Pedro y Jesus| {"USERID": "PMARTINEZ","ACTIVED": false}
 `POST` | api/inv/DeleteUserPhysical| Eliminado físico (Usuario Eliminado) | YES | Pedro y Jesus| {"USERID": "Prueba83"}
-
+   
 # EndPoints para Roles
 
 Endpoint | Route | Description | Finish| Creator | Body

@@ -159,8 +159,8 @@ service inversionsRoute @(path: '/api/inv') {
 
 
     @Core.Description: 'crear-nueva-vista'
-    @path            : 'CreateView'
-    action CreateView(
+    @path            : 'CreateViewService'
+    action CreateViewService(
         COMPANYID: Integer,
         CEDIID: Integer,
         LABELID: String,

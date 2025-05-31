@@ -84,7 +84,7 @@ module.exports = class dbsecurityClass extends cds.ApplicationService {
             return await GetAllViews(req);
         });
 
-        this.on('CreateView', async (req) => {
+        this.on('CreateViewService', async (req) => {
             return await CreateViewService(req);
           });
           
