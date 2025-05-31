@@ -27,7 +27,7 @@ service inversionsRoute @(path: '/api/inv') {
 
     @Core.Description: 'get-catalogs-by-application-id'
     @path            : 'GetCatalogsByApplicationId'
-    function GetCatalogsByApplicationId(IdApplication: String) returns array of catalogs;
+    function GetCatalogsByApplicationId(LABELID: String) returns array of catalogs;
 
     @Core.Description: 'get-catalogs-by-valueid'
     @path            : 'GetCatalogsByValueId'
@@ -35,7 +35,7 @@ service inversionsRoute @(path: '/api/inv') {
 
     @Core.Description: 'get-one-catalogs-by-valueid'
     @path            : 'GetCatalogOne'
-    function GetCatalogOne(ValueId: String) returns array of catalogs;
+    function GetCatalogOne(VALUEID: String) returns array of catalogs;
     
     @Core.Description: 'Actualizar catálogo por VALUEID'
     @path: 'UpdateCatalogByValueId'
@@ -209,8 +209,8 @@ service inversionsRoute @(path: '/api/inv') {
     function GetAllRoles()   returns array of roles;
 
     @Core.Description: 'get-role-with-users-by-roleid'
-    @path            : 'GetRoleWithUsers'
-    function getRoleWithUsersHandler(roleid: String) returns roles;
+    @path            : 'getRoleWithUsers'
+    function getRoleWithUsers(roleid: String) returns roles;
 
 @Core.Description: 'crear-rol-con-validacion'
 @path: 'CreateRole'
@@ -260,8 +260,7 @@ action CreateRole(
     @Core.Description: 'delete-role-logical'
     @path: 'DeleteRoleLogical'
     action DeleteRoleLogical(
-        roleid    : String, 
-        activated : Boolean
+        roleid    : String
     ) returns roles;
     //Delete fisico rol
     @Core.Description: 'delete-role-by-id'
